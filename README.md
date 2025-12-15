@@ -1,2 +1,2 @@
 # FocusKernel
-Система глубинного обучения FocusKernel для автоматического мониторинга и оценки вовлеченности студентов в режиме реального времени во время онлайн-занятий
+FocusKernel: Real-time Deep Learning system for detecting student engagement and distraction during online learning sessions.
