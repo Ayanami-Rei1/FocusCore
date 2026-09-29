@@ -1,18 +1,19 @@
-# Настройка облачного хранилища (Supabase)
+# Cloud storage setup (Supabase)
 
-Облачное хранилище нужно для сценария 10: вход, регистрация и синхронизация
-сессий между устройствами. Без него приложение работает в автономном режиме.
+Cloud storage is used by user scenario 10: sign-up, sign-in and synchronization
+of sessions between devices. Without it the application works offline.
 
-## 1. Проект
+## 1. Project
 
-1. Зарегистрироваться на https://supabase.com и создать проект (бесплатный план).
-2. **Authentication → Sign In / Providers → Email**: выключить **Confirm email**,
-   чтобы вход работал сразу после регистрации.
-3. **Project Settings → API**: скопировать **Project URL** и ключ **anon public**.
+1. Sign up at https://supabase.com and create a project (Free plan).
+2. **Authentication → Sign In / Providers → Email**: turn off **Confirm email**,
+   so that users can sign in right after registration.
+3. **Project Settings → API Keys**: copy the **Project URL** and the
+   **anon public** key (the **publishable** key also works).
 
-## 2. Таблицы
+## 2. Tables
 
-**SQL Editor → New query**, вставить и выполнить:
+Open **SQL Editor → New query**, paste and run:
 
 ```sql
 create table public.sessions (
@@ -47,20 +48,20 @@ create policy "Users manage own points" on public.engagement_points
     for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 ```
 
-Row Level Security гарантирует, что пользователь видит и меняет только свои строки,
-даже если кто-то узнает публичный ключ.
+Row Level Security guarantees that a user can read and change only their own
+rows, even if someone obtains the public key.
 
-## 3. Подключение приложения
+## 3. Connecting the application
 
-Создать файл `~/.focuscore/cloud.json` (в репозиторий не попадает):
+Create `~/.focuscore/cloud.json` (it is not stored in the repository):
 
 ```json
-{"url": "https://<проект>.supabase.co", "anon_key": "<ключ anon public>"}
+{"url": "https://<project>.supabase.co", "anon_key": "<anon public key>"}
 ```
 
-Перезапустить приложение и открыть раздел «Профиль».
+Restart the application and open the «Профиль» section.
 
-## Что хранится на сервере
+## What is stored on the server
 
-Только числовые данные занятий (время, длительность, оценки вовлечённости)
-и учётная запись (адрес, имя, фамилия). Видео и звук не передаются.
+Only numeric lecture data (time, duration, engagement scores) and the account
+(email, first and last name). Video and audio are never sent.
