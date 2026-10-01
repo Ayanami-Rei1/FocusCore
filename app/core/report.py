@@ -12,13 +12,13 @@ MIN_POINTS_FOR_REPORT = 1
 class CriticalMoment:
     """A continuous stretch of the lecture with engagement below the threshold."""
 
-    start_sec: int
-    end_sec: int
+    start_sec: float
+    end_sec: float
     min_value: float
 
 
 def find_critical_moments(
-    points: list[tuple[int, float]], threshold: float
+    points: list[tuple[float, float]], threshold: float
 ) -> list[CriticalMoment]:
     """Group consecutive points below the threshold into critical moments.
 
@@ -26,9 +26,9 @@ def find_critical_moments(
     or at the last low point if the lecture ended while engagement was low.
     """
     moments = []
-    start: int | None = None
+    start: float | None = None
     lowest = 0.0
-    last_low = 0
+    last_low = 0.0
     for offset, value in points:
         if value < threshold:
             if start is None:
@@ -51,7 +51,7 @@ class SessionReport:
     started_at: datetime
     duration_sec: int | None
     threshold_pct: int
-    points: list[tuple[int, float]]
+    points: list[tuple[float, float]]
 
     @property
     def has_data(self) -> bool:
@@ -75,6 +75,6 @@ class SessionReport:
         """Stretches below the threshold that was set for this lecture."""
         return find_critical_moments(self.points, self.threshold_pct)
 
-    def clock_time(self, offset_sec: int) -> datetime:
+    def clock_time(self, offset_sec: float) -> datetime:
         """Convert an offset from the lecture start into wall-clock time."""
         return self.started_at + timedelta(seconds=offset_sec)

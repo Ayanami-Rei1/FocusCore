@@ -70,10 +70,18 @@ class SessionClock:
 
     def elapsed(self) -> int:
         """Return whole seconds spent in the RUNNING state so far."""
+        return int(self.elapsed_exact())
+
+    def elapsed_exact(self) -> float:
+        """Return seconds spent in the RUNNING state so far, with fractions.
+
+        Estimates can come several times per second, so their offsets
+        need more precision than the timer on the screen.
+        """
         total = self._accumulated
         if self._state == SessionState.RUNNING:
             total += self._clock() - self._resumed_at
-        return int(total)
+        return total
 
     def _require(self, *allowed: SessionState) -> None:
         """Raise InvalidTransitionError unless the state is one of `allowed`."""

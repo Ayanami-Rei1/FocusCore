@@ -92,7 +92,7 @@ def save_engagement_summary(
 
 def save_engagement_points(
     session_id: str,
-    points: list[tuple[int, float]],
+    points: list[tuple[float, float]],
     db_path: Path = DB_PATH,
 ) -> None:
     """Store the engagement time series as (offset in seconds, value) pairs."""
@@ -107,7 +107,7 @@ def save_engagement_points(
 
 def load_engagement_points(
     session_id: str, db_path: Path = DB_PATH
-) -> list[tuple[int, float]]:
+) -> list[tuple[float, float]]:
     """Return the engagement time series of a session ordered by time."""
     with get_connection(db_path) as conn:
         rows = conn.execute(

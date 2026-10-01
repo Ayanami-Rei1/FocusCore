@@ -11,6 +11,7 @@ from app.core.formatting import (
     format_engagement,
     format_days,
     format_memory,
+    format_seconds,
     format_size,
     plural,
 )
@@ -65,3 +66,11 @@ def test_size_and_days() -> None:
     assert format_days(7) == "7 дней"
     assert format_days(90) == "3 месяца"
     assert format_days(365) == "1 год"
+
+
+@pytest.mark.parametrize(
+    ("seconds", "expected"),
+    [(0, "0 с"), (45, "45 с"), (60, "1 мин 00 с"), (125, "2 мин 05 с"), (3780, "1 ч 03 мин")],
+)
+def test_short_time_span(seconds: int, expected: str) -> None:
+    assert format_seconds(seconds) == expected

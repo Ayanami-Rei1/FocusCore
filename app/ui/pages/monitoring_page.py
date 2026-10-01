@@ -24,8 +24,8 @@ class MonitoringPage(QWidget):
     def __init__(self, db_path: Path = DB_PATH, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self._db_path = db_path
-        self._points: list[tuple[int, float]] = []
-        self._gaps: list[tuple[int, float]] = []
+        self._points: list[tuple[float, float]] = []
+        self._gaps: list[tuple[float, float]] = []
 
         self._build_widgets()
         self._build_layout()
@@ -70,7 +70,7 @@ class MonitoringPage(QWidget):
         self.current_level.clear()
         self.status_label.setText(STATUS_LIVE)
 
-    def add_point(self, offset_sec: int, value: float, is_gap: bool) -> None:
+    def add_point(self, offset_sec: float, value: float, is_gap: bool) -> None:
         """Append a point; a gap is additionally marked with a red cross."""
         self._points.append((offset_sec, value))
         if is_gap:

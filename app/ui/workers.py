@@ -3,14 +3,15 @@
 import random
 import time
 from collections import deque
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from concurrent.futures import Future, ThreadPoolExecutor
 
 import cv2
 import numpy as np
-from PyQt6.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtBoundSignal, pyqtSignal
 
 from app.core.engagement import NUM_FRAMES, EngagementModel
+from app.core.offline import iter_clips, usable_fps
 from app.core.video_source import FILE, VideoSource
 
 MAX_FAILED_READS = 20
@@ -85,8 +86,8 @@ def _shrink(frame: np.ndarray) -> np.ndarray:
     return cv2.resize(frame, (PREVIEW_MAX_WIDTH, int(height * scale)))
 
 
-class AnalysisWorker(QThread):
-    """Reads the source during a lecture and periodically runs the model.
+class CameraAnalysisWorker(QThread):
+    """Reads a camera during a lecture and periodically runs the model.
 
     Keeps the last NUM_FRAMES * FRAME_STRIDE frames in a buffer. Every
     `interval_sec` seconds it takes every FRAME_STRIDE-th of them, which is
@@ -95,21 +96,21 @@ class AnalysisWorker(QThread):
 
     The model runs in a separate helper thread, so frames keep flowing
     while an estimate is being computed and the live view does not freeze.
+    If an estimate takes longer than the interval, the next one starts
+    right after it, so the real rate is limited by the model speed.
 
     Signals:
-        model_ready: Emitted once the model is loaded and the source is open.
+        model_ready: Emitted once the model is loaded and the camera is open.
         frame_ready: Emitted with every processed BGR frame (numpy array).
         estimate_ready: Emitted with every engagement score 0..100.
         estimate_failed: Emitted when the model could not produce a score.
-        source_ended: Emitted when a video file reaches its end.
-        failed: Emitted with a message if the model or the source fails.
+        failed: Emitted with a message if the model or the camera fails.
     """
 
     model_ready = pyqtSignal()
     frame_ready = pyqtSignal(object)
     estimate_ready = pyqtSignal(float)
     estimate_failed = pyqtSignal()
-    source_ended = pyqtSignal()
     failed = pyqtSignal(str)
 
     def __init__(
@@ -122,7 +123,7 @@ class AnalysisWorker(QThread):
         """Create the worker.
 
         Args:
-            source: Camera or file to analyse.
+            source: Camera to analyse.
             interval_sec: Time between two estimates.
             simulated_error_rate: Share of estimates (0..1) failed on purpose
                 to test and demonstrate how gaps are handled.
@@ -139,7 +140,7 @@ class AnalysisWorker(QThread):
         self._paused = paused
 
     def stop(self) -> None:
-        """Ask the loop to finish and wait until the source is released.
+        """Ask the loop to finish and wait until the camera is released.
 
         The wait is longer than for the preview, because an inference
         that has already started must complete first.
@@ -149,16 +150,11 @@ class AnalysisWorker(QThread):
 
     def run(self) -> None:
         """Thread body: load the model, then read frames and estimate."""
-        try:
-            model = EngagementModel()
-        except (RuntimeError, OSError, ValueError):
-            self.failed.emit("Не удалось загрузить модель анализа.")
+        model = _load_model(self.failed)
+        if model is None:
             return
-
-        capture = self._source.open()
-        if not capture.isOpened():
-            capture.release()
-            self.failed.emit("Не удалось открыть источник видео.")
+        capture = _open_capture(self._source, self.failed)
+        if capture is None:
             return
         self.model_ready.emit()
 
@@ -176,10 +172,6 @@ class AnalysisWorker(QThread):
         executor: ThreadPoolExecutor,
     ) -> None:
         """Main loop: buffer frames and start an estimate every interval."""
-        is_file = self._source.kind == FILE
-        fps = capture.get(cv2.CAP_PROP_FPS)
-        delay_ms = int(1000 / fps) if is_file and fps > 0 else 0
-
         frames: deque[np.ndarray] = deque(maxlen=NUM_FRAMES * FRAME_STRIDE)
         next_estimate_at = time.monotonic()
         failed_reads = 0
@@ -192,22 +184,14 @@ class AnalysisWorker(QThread):
 
             if self._paused:
                 frames.clear()
-                if is_file:
-                    self.msleep(PAUSE_SLEEP_MS)
-                else:
-                    capture.read()
+                capture.read()
                 continue
 
             ok, frame = capture.read()
             if not ok:
-                if is_file:
-                    if pending is not None:
-                        self._emit_result(pending)
-                    self.source_ended.emit()
-                    return
                 failed_reads += 1
                 if failed_reads >= MAX_FAILED_READS:
-                    self.failed.emit("Источник видео перестал передавать изображение.")
+                    self.failed.emit("Камера перестала передавать изображение.")
                     return
                 self.msleep(RETRY_DELAY_MS)
                 continue
@@ -223,9 +207,6 @@ class AnalysisWorker(QThread):
                 pending = executor.submit(model.engagement_score, clip)
                 next_estimate_at = time.monotonic() + self._interval_sec
 
-            if delay_ms:
-                self.msleep(delay_ms)
-
     def _emit_result(self, finished: Future) -> None:
         """Emit the score of a finished estimate, or report that it failed."""
         if self._paused:
@@ -235,10 +216,145 @@ class AnalysisWorker(QThread):
         except RuntimeError:
             self.estimate_failed.emit()
             return
-        if random.random() < self._simulated_error_rate:
+        if _simulate_failure(self._simulated_error_rate):
             self.estimate_failed.emit()
             return
         self.estimate_ready.emit(score)
+
+
+class FileAnalysisWorker(QThread):
+    """Analyses a whole video file as fast as the computer allows.
+
+    Frames are read without waiting for the video's own frame rate, and
+    estimates are spaced by video time (see app.core.offline), so the speed
+    depends only on the model and the chosen interval, and the report is
+    ready right after. Only the frame of each estimate is emitted for
+    display, so the interface is not flooded with frames.
+
+    Signals:
+        model_ready: Emitted once the model is loaded and the file is open.
+        frame_ready: Emitted with the last frame of every analysed clip.
+        estimate_ready: Emitted with (offset_sec, score) for every estimate;
+            the offset is the position in the video.
+        estimate_failed: Emitted with offset_sec when an estimate failed.
+        progress: Emitted with (position_sec, duration_sec) of the video.
+        source_ended: Emitted when the whole file has been analysed.
+        failed: Emitted with a message if the model or the file fails.
+    """
+
+    model_ready = pyqtSignal()
+    frame_ready = pyqtSignal(object)
+    estimate_ready = pyqtSignal(float, float)
+    estimate_failed = pyqtSignal(float)
+    progress = pyqtSignal(float, float)
+    source_ended = pyqtSignal()
+    failed = pyqtSignal(str)
+
+    def __init__(
+        self,
+        source: VideoSource,
+        interval_sec: float,
+        simulated_error_rate: float = 0.0,
+        parent=None,
+    ) -> None:
+        """Create the worker.
+
+        Args:
+            source: Video file to analyse.
+            interval_sec: Video time between two estimates.
+            simulated_error_rate: Share of estimates (0..1) failed on purpose
+                to test and demonstrate how gaps are handled.
+        """
+        super().__init__(parent)
+        self._source = source
+        self._interval_sec = interval_sec
+        self._simulated_error_rate = simulated_error_rate
+        self._running = True
+        self._paused = False
+
+    def set_paused(self, paused: bool) -> None:
+        """Pause or resume reading the file."""
+        self._paused = paused
+
+    def stop(self) -> None:
+        """Ask the loop to finish and wait until the file is released."""
+        self._running = False
+        self.wait(ANALYSIS_STOP_TIMEOUT_MS)
+
+    def run(self) -> None:
+        """Thread body: load the model, then analyse the file to its end."""
+        model = _load_model(self.failed)
+        if model is None:
+            return
+        capture = _open_capture(self._source, self.failed)
+        if capture is None:
+            return
+        self.model_ready.emit()
+
+        try:
+            finished = self._process(capture, model)
+        finally:
+            capture.release()
+        if finished:
+            self.source_ended.emit()
+
+    def _process(self, capture: cv2.VideoCapture, model: EngagementModel) -> bool:
+        """Estimate every clip of the file; return False if stopped early."""
+        fps = usable_fps(capture.get(cv2.CAP_PROP_FPS))
+        duration_sec = max(0.0, capture.get(cv2.CAP_PROP_FRAME_COUNT) / fps)
+        clips = iter_clips(
+            self._read_frames(capture), fps, self._interval_sec, NUM_FRAMES, FRAME_STRIDE
+        )
+        for offset, clip in clips:
+            if not self._running:
+                return False
+            self.frame_ready.emit(clip[-1])
+            try:
+                score = model.engagement_score(clip)
+            except RuntimeError:
+                self.estimate_failed.emit(offset)
+            else:
+                if _simulate_failure(self._simulated_error_rate):
+                    self.estimate_failed.emit(offset)
+                else:
+                    self.estimate_ready.emit(offset, score)
+            self.progress.emit(offset, max(duration_sec, offset))
+        return self._running
+
+    def _read_frames(self, capture: cv2.VideoCapture) -> Iterator[np.ndarray]:
+        """Yield downscaled frames until the file ends or the worker stops."""
+        while self._running:
+            if self._paused:
+                self.msleep(PAUSE_SLEEP_MS)
+                continue
+            ok, frame = capture.read()
+            if not ok:
+                return
+            yield _resize_to_height(frame, ANALYSIS_FRAME_HEIGHT)
+
+
+def _load_model(failed: pyqtBoundSignal) -> EngagementModel | None:
+    """Load the model, or emit `failed` with a message and return None."""
+    try:
+        return EngagementModel()
+    except (RuntimeError, OSError, ValueError):
+        failed.emit("Не удалось загрузить модель анализа.")
+        return None
+
+
+def _open_capture(source: VideoSource, failed: pyqtBoundSignal) -> cv2.VideoCapture | None:
+    """Open the source, or emit `failed` with a message and return None."""
+    capture = source.open()
+    if capture.isOpened():
+        return capture
+    capture.release()
+    failed.emit("Не удалось открыть источник видео.")
+    return None
+
+
+def _simulate_failure(rate: float) -> bool:
+    """Decide at random whether to fail this estimate on purpose."""
+    return random.random() < rate
 
 
 def _resize_to_height(frame: np.ndarray, target_height: int) -> np.ndarray:

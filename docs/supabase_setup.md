@@ -32,7 +32,7 @@ create table public.engagement_points (
     id uuid primary key,
     session_id uuid not null references public.sessions(id) on delete cascade,
     user_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
-    offset_sec integer not null,
+    offset_sec double precision not null,
     value real not null
 );
 
@@ -47,6 +47,16 @@ create policy "Users manage own sessions" on public.sessions
 create policy "Users manage own points" on public.engagement_points
     for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 ```
+
+If the tables were created with an earlier version of this guide, where
+`offset_sec` was an integer, run once:
+
+```sql
+alter table public.engagement_points
+    alter column offset_sec type double precision;
+```
+
+Estimates can come several times per second, so offsets have fractions.
 
 Row Level Security guarantees that a user can read and change only their own
 rows, even if someone obtains the public key.

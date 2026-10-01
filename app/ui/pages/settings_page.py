@@ -5,7 +5,6 @@ from pathlib import Path
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import (
-    QComboBox,
     QDoubleSpinBox,
     QFormLayout,
     QHBoxLayout,
@@ -27,14 +26,15 @@ THRESHOLD_WARNING = (
     "При пороге 0 % или 100 % критические моменты фиксироваться не будут."
 )
 INTERVAL_WARNING = (
-    "Модель не успеет обработать кадры чаще, чем раз в секунду. "
-    "Увеличьте интервал до 1 с или больше."
+    "Модель не успеет обработать кадры чаще, чем раз в 0,2 секунды. "
+    "Увеличьте интервал до 0,2 с или больше."
 )
-SMOOTHING_PRESETS: list[tuple[str, int]] = [
-    ("Подробно: видны даже короткие спады", 1),
-    ("Сбалансированно", 3),
-    ("Общая тенденция: без случайных скачков", 6),
-]
+INTERVAL_HINT = (
+    "Для камеры подойдёт интервал меньше секунды, например 0,3–0,5 с: "
+    "изменения видны почти сразу. Для видеофайла лучше 1–3 с, а для длинной "
+    "записи, например целой пары, 5–10 с: обработка пройдёт заметно быстрее, "
+    "а график почти не изменится."
+)
 SAVED_MESSAGE = "Параметры сохранены и будут применены к следующей лекции."
 
 
@@ -71,14 +71,21 @@ class SettingsPage(QWidget):
         self.interval_spin = QDoubleSpinBox()
         self.interval_spin.setRange(config.INTERVAL_MIN_SEC, config.INTERVAL_MAX_SEC)
         self.interval_spin.setDecimals(1)
-        self.interval_spin.setSingleStep(0.5)
+        self.interval_spin.setSingleStep(0.1)
         self.interval_spin.setSuffix(" с")
         self.interval_warning = self._warning_label(INTERVAL_WARNING)
+        self.interval_hint = QLabel(INTERVAL_HINT)
+        self.interval_hint.setWordWrap(True)
+        set_role(self.interval_hint, "hint")
 
-        self.smoothing_combo = QComboBox()
-        for text, window in SMOOTHING_PRESETS:
-            self.smoothing_combo.addItem(text, window)
+        self.smoothing_slider = QSlider(Qt.Orientation.Horizontal)
+        self.smoothing_slider.setRange(config.SMOOTHING_MIN, config.SMOOTHING_MAX)
+        self.smoothing_slider.setPageStep(1)
+        self.smoothing_slider.setMinimumWidth(320)
+        self.smoothing_value = QLabel()
+        self.smoothing_value.setFixedWidth(self.threshold_value.maximumWidth())
         self.smoothing_hint = QLabel()
+        self.smoothing_hint.setWordWrap(True)
         set_role(self.smoothing_hint, "hint")
 
         self.save_button = QPushButton("Сохранить параметры")
@@ -103,7 +110,11 @@ class SettingsPage(QWidget):
         form.addRow("", self.threshold_warning)
         form.addRow("Периодичность оценки:", self.interval_spin)
         form.addRow("", self.interval_warning)
-        form.addRow("Детализация графика:", self.smoothing_combo)
+        form.addRow("", self.interval_hint)
+        smoothing_row = QHBoxLayout()
+        smoothing_row.addWidget(self.smoothing_slider)
+        smoothing_row.addWidget(self.smoothing_value)
+        form.addRow("Гладкость графика:", smoothing_row)
         form.addRow("", self.smoothing_hint)
 
         layout = QVBoxLayout(self)
@@ -118,14 +129,14 @@ class SettingsPage(QWidget):
         """Wire widget events to their handlers."""
         self.threshold_slider.valueChanged.connect(self._on_threshold_changed)
         self.interval_spin.valueChanged.connect(self._on_interval_changed)
-        self.smoothing_combo.currentIndexChanged.connect(self._on_smoothing_changed)
+        self.smoothing_slider.valueChanged.connect(self._on_smoothing_changed)
         self.save_button.clicked.connect(self._on_save_clicked)
 
     def _set_form_values(self, settings: AnalysisSettings) -> None:
         """Fill the form from settings and refresh the dependent labels."""
         self.threshold_slider.setValue(settings.threshold_pct)
         self.interval_spin.setValue(settings.interval_sec)
-        self._select_smoothing(settings.smoothing_window)
+        self.smoothing_slider.setValue(settings.smoothing_window)
         self._on_threshold_changed(settings.threshold_pct)
         self._on_interval_changed(settings.interval_sec)
 
@@ -134,7 +145,7 @@ class SettingsPage(QWidget):
         return AnalysisSettings(
             threshold_pct=self.threshold_slider.value(),
             interval_sec=round(self.interval_spin.value(), 1),
-            smoothing_window=self.smoothing_combo.currentData(),
+            smoothing_window=self.smoothing_slider.value(),
         )
 
     def _on_threshold_changed(self, value: int) -> None:
@@ -152,27 +163,25 @@ class SettingsPage(QWidget):
         self.status_label.clear()
 
     def _on_smoothing_changed(self) -> None:
-        """Refresh the hint after another smoothing preset is chosen."""
+        """Show the chosen smoothing and explain it."""
         self._update_smoothing_hint()
         self.status_label.clear()
 
-    def _select_smoothing(self, window: int) -> None:
-        """Select the preset with this window, or the default one if none matches."""
-        index = self.smoothing_combo.findData(window)
-        if index < 0:
-            index = self.smoothing_combo.findData(AnalysisSettings().smoothing_window)
-        self.smoothing_combo.setCurrentIndex(index)
-
     def _update_smoothing_hint(self) -> None:
-        """Explain the chosen preset in seconds, based on the current interval."""
-        window = self.smoothing_combo.currentData()
-        if window is None:
+        """Explain the smoothing in seconds, based on the current interval."""
+        span = self.smoothing_slider.value()
+        self.smoothing_value.setText(str(span))
+        if span == 1:
+            self.smoothing_hint.setText(
+                "Без сглаживания: график повторяет каждую оценку модели."
+            )
             return
-        if window == 1:
-            self.smoothing_hint.setText("Каждая оценка показывается без усреднения.")
-            return
-        seconds = f"{window * self.interval_spin.value():g}".replace(".", ",")
-        self.smoothing_hint.setText(f"Значение усредняется за последние {seconds} с.")
+        seconds = f"{span * self.interval_spin.value():g}".replace(".", ",")
+        self.smoothing_hint.setText(
+            f"Учитываются примерно {span} последних оценок (≈ {seconds} с), "
+            "свежие весят больше. Чем выше значение, тем ровнее график "
+            "и тем позже заметен спад."
+        )
 
     def _on_save_clicked(self) -> None:
         """Store the settings, confirm to the user and emit `saved`."""

@@ -31,6 +31,14 @@ def test_running_time_is_counted(clock: FakeClock) -> None:
     assert session.elapsed() == 90
 
 
+def test_exact_time_keeps_fractions(clock: FakeClock) -> None:
+    session = SessionClock(clock)
+    session.start()
+    clock.now = 1.4
+    assert session.elapsed_exact() == pytest.approx(1.4)
+    assert session.elapsed() == 1
+
+
 def test_paused_time_is_not_counted(clock: FakeClock) -> None:
     session = SessionClock(clock)
     session.start()

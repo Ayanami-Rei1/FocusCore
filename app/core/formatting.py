@@ -22,6 +22,17 @@ def format_clock(seconds: int) -> str:
     return f"{hours:02d}:{minutes:02d}:{secs:02d}"
 
 
+def format_seconds(seconds: int) -> str:
+    """Format a short time span as '45 с', '2 мин 05 с' or '1 ч 03 мин'."""
+    minutes, secs = divmod(max(0, seconds), 60)
+    hours, minutes = divmod(minutes, 60)
+    if hours:
+        return f"{hours} ч {minutes:02d} мин"
+    if minutes:
+        return f"{minutes} мин {secs:02d} с"
+    return f"{secs} с"
+
+
 def format_duration(seconds: int | None) -> str:
     """Format a duration as '1 ч 05 мин', '45 мин' or '< 1 мин'."""
     if seconds is None:

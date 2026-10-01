@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 CREATE TABLE IF NOT EXISTS engagement_points (
     id          TEXT PRIMARY KEY,
     session_id  TEXT NOT NULL,
-    offset_sec  INTEGER NOT NULL,
+    offset_sec  REAL NOT NULL,
     value       REAL NOT NULL,
     FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE CASCADE
 );
