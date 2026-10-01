@@ -1,3 +1,31 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+.venv/
+venv/
+*.egg
+
+# cached filtered manifests + analysis artifacts
+data/**/data_labels/.cache/
+docs/dataset_analysis.json
+docs/dataset_analysis.csv
+
+.vscode/
+
+*.ckpt
+*.pt
+*.pth
+
+.DS_Store
+/mlruns
+*.ts
+SLOW_8x8_R50.pyth
+outputs/
+demo_lecture.mp4
+
+# Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
