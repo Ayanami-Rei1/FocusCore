@@ -22,7 +22,7 @@ Teachers cannot objectively assess collective student engagement during lessons.
 
 1. Reproduce OUC-CGE baseline (~98% accuracy with SLOW model)
 2. Compare video architectures (I3D, SlowFast, SLOW, X3D)
-3. Implement pose/landmark models
+3. ~~Implement pose/landmark models~~ (dropped: end-to-end training on raw frames)
 4. Validate generalization on DIPSER
 5. Build inference pipeline and report generation
 
@@ -63,24 +63,10 @@ focus-core/
 │   │   └── backbones/          #   video model wrappers
 │   │       └── pytorchvideo.py #     PyTorchVideo models (to implement)
 │   │
-│   ├── features/               # Feature extraction (Phase 3-4)
-│   │   ├── pose.py             #   body pose (MediaPipe BlazePose)
-│   │   └── landmarks.py        #   facial landmarks (MediaPipe Face Mesh)
-│   │
-│   ├── fusion/                 # Multimodal fusion (Phase 4)
-│   │   └── strategies.py       #   early/late/attention fusion
-│   │
-│   ├── metrics/                # Evaluation metrics
 │   ├── training/               # Training utilities
 │   │   └── callbacks.py        #   MLflow logging, early stopping
-│   ├── utils/                  # General utilities
-│   │   └── logging.py          #   MLflow helpers
-│   │
-│   ├── inference/              # Inference pipeline (Phase 6)
-│   │   └── pipeline.py         #   end-to-end video inference
-│   │
-│   └── reporting/              # Report generation (Phase 7)
-│       └── engagement_report.py
+│   └── utils/                  # General utilities
+│       └── logging.py          #   MLflow helpers
 │
 ├── scripts/                    # Utility scripts
 ├── docs/                       # Project documentation
