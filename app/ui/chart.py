@@ -10,6 +10,7 @@ from app.ui import theme
 
 SECONDS_IN_MINUTE = 60
 CRITICAL_ALPHA = 40
+SELECTED_ALPHA = 120
 
 pg.setConfigOptions(antialias=True)
 
@@ -76,15 +77,20 @@ class EngagementChart(pg.PlotWidget):
         last_minute = minutes[-1] if minutes else 0.0
         self.setXRange(0, max(1.0, last_minute), padding=0.02)
 
-    def highlight_moments(self, moments: list[CriticalMoment]) -> None:
-        """Shade the critical moments; previous shading is removed."""
+    def highlight_moments(
+        self, moments: list[CriticalMoment], selected: int | None = None
+    ) -> None:
+        """Shade the critical moments, the selected one more strongly.
+
+        Previous shading is removed.
+        """
         for region in self._regions:
             self.removeItem(region)
         self._regions = []
 
-        color = QColor(theme.DANGER)
-        color.setAlpha(CRITICAL_ALPHA)
-        for moment in moments:
+        for index, moment in enumerate(moments):
+            color = QColor(theme.DANGER)
+            color.setAlpha(SELECTED_ALPHA if index == selected else CRITICAL_ALPHA)
             end_sec = max(moment.end_sec, moment.start_sec + 1)
             region = pg.LinearRegionItem(
                 values=(moment.start_sec / SECONDS_IN_MINUTE, end_sec / SECONDS_IN_MINUTE),

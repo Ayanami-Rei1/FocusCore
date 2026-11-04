@@ -59,7 +59,8 @@ class MainWindow(QMainWindow):
         self.menu.setObjectName("menu")
         self.stack = QStackedWidget()
 
-        self.lecture_page = LecturePage()
+        account_service = create_account_service()
+        self.lecture_page = LecturePage(account_service)
         self.monitoring_page = MonitoringPage()
         self.source_page = SourcePage()
         self.settings_page = SettingsPage()
@@ -67,7 +68,7 @@ class MainWindow(QMainWindow):
         self.privacy_page = PrivacyPage()
         self.reports_page = ReportsPage()
         self.help_page = HelpPage()
-        self.profile_page = ProfilePage(create_account_service())
+        self.profile_page = ProfilePage(account_service)
         pages: dict[str, QWidget] = {
             LECTURE: self.lecture_page,
             MONITORING: self.monitoring_page,
@@ -140,6 +141,12 @@ class MainWindow(QMainWindow):
             lambda _: self.monitoring_page.finish_session()
         )
         self.lecture_page.session_finished.connect(self._on_session_finished)
+        self.lecture_page.transcription_started.connect(
+            self.reports_page.on_transcription_started
+        )
+        self.lecture_page.transcription_finished.connect(
+            self.reports_page.on_transcription_finished
+        )
         self.history_page.sessions_deleted.connect(self.profile_page.sync_in_background)
         self.privacy_page.sessions_deleted.connect(self.profile_page.sync_in_background)
         self.profile_page.status_message.connect(self._show_status)
