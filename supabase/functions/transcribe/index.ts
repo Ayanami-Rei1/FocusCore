@@ -64,7 +64,12 @@ Deno.serve(async (request: Request) => {
     return reply(429, { error_code: "rate_limit", msg: "Transcription limit reached" });
   }
   if (!response.ok) {
-    return reply(502, { error_code: "transcription_failed", msg: `OpenAI answered ${response.status}` });
+    const details = await response.text();
+    console.error(`OpenAI answered ${response.status}: ${details}`);
+    return reply(502, {
+      error_code: "transcription_failed",
+      msg: `OpenAI answered ${response.status}: ${details.slice(0, 300)}`,
+    });
   }
   const result = await response.json();
   return reply(200, { text: result.text ?? "" });

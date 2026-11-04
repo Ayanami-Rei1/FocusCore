@@ -35,7 +35,7 @@ from app.db.local import DB_PATH
 from app.db.moments import save_comment
 from app.db.sessions import list_sessions, load_session_report
 from app.ui.chart import EngagementChart
-from app.ui.theme import page_title, set_role
+from app.ui.theme import set_role
 
 NO_SESSIONS_TEXT = "Проведённых лекций пока нет."
 CHOOSE_SESSION_TEXT = "Выберите сессию из списка слева."
@@ -49,7 +49,7 @@ MOSTLY_LOW_TEXT = (
     "Вовлечённость была ниже порога большую часть занятия: возможно, порог "
     "стоит понизить в разделе «Параметры анализа»."
 )
-SESSION_LIST_WIDTH = 240
+SESSION_LIST_WIDTH = 200
 MOMENTS_HEIGHT = 190
 
 
@@ -62,6 +62,7 @@ class StatTile(QFrame):
         self.value = QLabel("—")
         set_role(self.value, "statValue")
         label = QLabel(caption)
+        label.setWordWrap(True)
         set_role(label, "hint")
         layout = QVBoxLayout(self)
         layout.addWidget(self.value)
@@ -169,7 +170,6 @@ class ReportsPage(QWidget):
         content.addWidget(self.message_label, stretch=1)
 
         layout = QVBoxLayout(self)
-        layout.addWidget(page_title("Отчёты"))
         layout.addLayout(content, stretch=1)
 
     def showEvent(self, event: QShowEvent) -> None:

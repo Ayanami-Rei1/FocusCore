@@ -59,7 +59,7 @@ from app.db.settings import (
 from app.ui.image import frame_to_pixmap
 from app.ui.indicator import EngagementIndicator
 from app.ui.memory_dialog import MemoryDialog
-from app.ui.theme import page_title, set_role
+from app.ui.theme import set_role
 from app.ui.transcription_job import (
     NO_TRANSCRIBER_TEXT,
     Transcriber,
@@ -221,7 +221,6 @@ class LecturePage(QWidget):
 
     def _build_layout(self) -> None:
         """Center all elements of the page."""
-        title = page_title("Лекция")
         center = Qt.AlignmentFlag.AlignHCenter
 
         source_row = QHBoxLayout()
@@ -237,7 +236,6 @@ class LecturePage(QWidget):
         controls.addStretch()
 
         layout = QVBoxLayout(self)
-        layout.addWidget(title)
         layout.addStretch()
         layout.addLayout(source_row)
         layout.addWidget(self.status_label, alignment=center)
