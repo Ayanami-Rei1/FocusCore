@@ -182,11 +182,9 @@ class CameraAnalysisWorker(QThread):
                 self._emit_result(pending)
                 pending = None
 
-            if self._paused:
-                frames.clear()
-                capture.read()
-                continue
-
+            # While paused the camera is still read, so that its buffer does not
+            # fill with stale frames; a lost camera is reported in both states,
+            # otherwise a dead capture.read() would spin here at full CPU.
             ok, frame = capture.read()
             if not ok:
                 failed_reads += 1
@@ -197,6 +195,10 @@ class CameraAnalysisWorker(QThread):
                 continue
 
             failed_reads = 0
+            if self._paused:
+                frames.clear()
+                continue
+
             small = _resize_to_height(frame, ANALYSIS_FRAME_HEIGHT)
             frames.append(small)
             self.frame_ready.emit(small)

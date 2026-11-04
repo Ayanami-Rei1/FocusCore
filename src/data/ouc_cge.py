@@ -184,16 +184,37 @@ class OUCCGEDataset(VideoDataset):
         tensor = torch.from_numpy(np_frames).permute(0, 3, 1, 2).float() / 255.0
         return tensor
 
-    def __getitem__(self, index: int) -> dict:
+    # How many consecutive clips a *training* sample may fall through to when a
+    # clip turns out to be unreadable despite the filtering pass.
+    MAX_FALLBACK_ATTEMPTS = 8
+
+    def _apply_transform(self, clips: list[torch.Tensor]) -> list[torch.Tensor]:
+        """Apply the transform to every pathway with the *same* random parameters.
+
+        torchvision v2 random transforms draw their parameters from torch's
+        global RNG, so restoring the RNG state before each pathway gives the
+        SlowFast slow and fast clips the same crop / flip (they are views of
+        the same frames and are fused spatially inside the network).
+        """
+        if self.transform is None:
+            return clips
+        if len(clips) == 1:
+            return [self.transform(clips[0])]
+        state = torch.get_rng_state()
+        out = []
+        for clip in clips:
+            torch.set_rng_state(state)
+            out.append(self.transform(clip))
+        return out
+
+    def _load_sample(self, index: int) -> dict:
+        """Decode one sample. Raises RuntimeError if the clip cannot be used."""
         video_path = self.root / str(self.sample.iloc[index, 0])
         cap = cv2.VideoCapture(str(video_path))
-        if not cap.isOpened():
-            raise RuntimeError(f"could not open video {video_path}")
-
         try:
+            if not cap.isOpened():
+                raise RuntimeError(f"could not open video {video_path}")
             total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-            label = torch.tensor(int(self.sample.iloc[index, 1]), dtype=torch.int64)
-
             if total_frames < self.window_size:
                 raise RuntimeError(
                     f"{total_frames} frames < window {self.window_size} in {video_path}"
@@ -204,20 +225,39 @@ class OUCCGEDataset(VideoDataset):
                 start_point = (total_frames - self.window_size + 1) // 2
             else:
                 start_point = int(np.random.randint(0, total_frames - self.window_size + 1))
-
-            data = {}
-            for i, (n_frames, n_rate) in enumerate(zip(self.num_frames, self.list_of_rates)):
-                clip = self._get_frames(cap, video_path, start_point, n_frames, n_rate)
-                data[f"flow_num_{i}"] = self.transform(clip) if self.transform else clip
-        except RuntimeError as e:
-            logger.warning("Skipping sample %d: %s", index, e)
-            return self.__getitem__((index + 1) % len(self))
+            clips = [
+                self._get_frames(cap, video_path, start_point, n_frames, n_rate)
+                for n_frames, n_rate in zip(self.num_frames, self.list_of_rates)
+            ]
         finally:
             cap.release()
 
-        data["label"] = label
+        data = {f"flow_num_{i}": c for i, c in enumerate(self._apply_transform(clips))}
+        data["label"] = torch.tensor(int(self.sample.iloc[index, 1]), dtype=torch.int64)
         data["path"] = str(video_path)
         return data
+
+    def __getitem__(self, index: int) -> dict:
+        if self.split in ('val', 'test'):
+            # Evaluation must never swap a clip for its neighbour: that would
+            # silently duplicate one sample and drop another in the metrics.
+            return self._load_sample(index)
+
+        # Training: tolerate a corrupt clip by moving to the next one, but only
+        # a bounded number of times, and release each capture before moving on.
+        attempts = min(self.MAX_FALLBACK_ATTEMPTS, len(self))
+        last_error: Exception | None = None
+        for k in range(attempts):
+            i = (index + k) % len(self)
+            try:
+                return self._load_sample(i)
+            except RuntimeError as e:
+                last_error = e
+                logger.warning("Skipping train sample %d: %s", i, e)
+        raise RuntimeError(
+            f"{attempts} consecutive training clips starting at index {index} "
+            f"failed to load; last error: {last_error}"
+        )
 
     @property
     def num_classes(self) -> int:

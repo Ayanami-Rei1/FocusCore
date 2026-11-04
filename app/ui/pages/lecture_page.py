@@ -212,8 +212,17 @@ class LecturePage(QWidget):
         return self._clock.state in (SessionState.RUNNING, SessionState.PAUSED)
 
     def shutdown(self) -> None:
-        """Stop the analysis thread; called when the window closes."""
-        self._stop_worker()
+        """Save a running lecture and stop the analysis thread; called when the
+        window closes.
+
+        The engagement series lives only in memory until the session is
+        finished, so closing the window must finish it instead of discarding
+        the whole lecture.
+        """
+        if self.is_lecture_running():
+            self._finish_session()
+        else:
+            self._stop_worker()
 
     def _update_source_label(self) -> None:
         """Show which source the next lecture will use."""
@@ -444,9 +453,11 @@ class LecturePage(QWidget):
         """Stop analysis, save the series and the summary, return to idle."""
         if self._session_id is None:
             return
-        self._stop_worker()
+        # Read the clock first: stopping the worker waits for the running
+        # inference (up to ANALYSIS_STOP_TIMEOUT_MS), which is not lecture time.
         self._timer.stop()
         duration = self._clock.finish()
+        self._stop_worker()
         if self._is_file:
             duration = round(self._video_position)
         values = [value for _, value in self._points]
