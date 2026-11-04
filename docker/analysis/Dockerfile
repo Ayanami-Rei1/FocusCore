@@ -16,9 +16,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+# The pip bundled with the base image rejects some current wheels, so it is updated first.
+RUN pip install --no-cache-dir --upgrade pip
+
 # torch is pinned to the version the model was tested with in the application.
-RUN pip install --no-cache-dir torch==2.5.1 torchvision==0.20.1 \
-    --index-url https://download.pytorch.org/whl/cpu
+# The +cpu builds come from the PyTorch index, everything else from PyPI.
+RUN pip install --no-cache-dir "torch==2.5.1+cpu" "torchvision==0.20.1+cpu" \
+    --extra-index-url https://download.pytorch.org/whl/cpu
 
 COPY requirements-core.txt .
 RUN pip install --no-cache-dir -r requirements-core.txt
