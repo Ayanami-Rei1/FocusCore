@@ -16,7 +16,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+# torch is pinned to the version the model was tested with in the application.
+RUN pip install --no-cache-dir torch==2.5.1 torchvision==0.20.1 \
+    --index-url https://download.pytorch.org/whl/cpu
 
 COPY requirements-core.txt .
 RUN pip install --no-cache-dir -r requirements-core.txt
