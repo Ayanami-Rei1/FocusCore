@@ -23,7 +23,6 @@ docs/dataset_analysis.csv
 <<<<<<< HEAD
 app/models/
 SLOW_8x8_R50.pyth
-outputs/
 demo_lecture.mp4
 =======
 *.ts
