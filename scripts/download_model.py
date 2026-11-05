@@ -12,7 +12,7 @@ import requests
 from app.core.engagement import MODEL_PATH
 
 MODEL_URL = (
-    "https://github.com/Ayanami-Rei1/FocusCore/releases/download/v1.0/engagement_slow_r50.ts"
+    "https://github.com/Ayanami-Rei1/FocusCore/releases/download/v2.0/engagement_slow_r50.ts"
 )
 CHUNK_BYTES = 1 << 20
 TIMEOUT_SEC = 60

@@ -8,7 +8,7 @@
 
 FROM python:3.10-slim
 
-ARG MODEL_URL=https://github.com/Ayanami-Rei1/FocusCore/releases/download/v1.0/engagement_slow_r50.ts
+ARG MODEL_URL=https://github.com/Ayanami-Rei1/FocusCore/releases/download/v2.0/engagement_slow_r50.ts
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
