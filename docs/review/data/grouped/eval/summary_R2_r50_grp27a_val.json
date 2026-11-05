@@ -1,0 +1,37 @@
+{
+  "tag": "R2_r50_grp27a_val",
+  "model": "resnet50",
+  "ckpt": "/workspace/focus-core/outputs/review/R2_r50_grp27a/checkpoints/epoch=02-val_acc=0.6005.ckpt",
+  "split": "val",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 771,
+  "dropped_by_window_filter": 0,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.6005188226699829,
+  "lightning_test_f1_macro": 0.5489446520805359,
+  "lightning_test_loss": 2.161017656326294,
+  "sklearn_accuracy": 0.6005188067444877,
+  "sklearn_f1_macro": 0.5489446383724347,
+  "confusion_rows_true_low_mid_high": [
+    [
+      261,
+      25,
+      20
+    ],
+    [
+      120,
+      47,
+      34
+    ],
+    [
+      77,
+      32,
+      155
+    ]
+  ],
+  "n_errors": 308,
+  "mean_max_prob": 0.8758040070533752,
+  "seconds": 6.5
+}

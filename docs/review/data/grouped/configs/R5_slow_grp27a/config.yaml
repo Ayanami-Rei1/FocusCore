@@ -1,0 +1,52 @@
+experiment:
+  name: baseline_ouc_cge
+  seed: 42
+mlflow:
+  tracking_uri: null
+  experiment_name: review_grouped
+paths:
+  output_dir: outputs/review/R5_slow_grp27a
+  checkpoints: ${paths.output_dir}/checkpoints
+  logs: ${paths.output_dir}/logs
+data:
+  name: ouc_cge
+  root: data/grp27a
+  num_classes: 3
+  clip_duration_sec: 10.0
+  fps: 30
+  batch_size: 32
+  num_workers: 16
+  pin_memory: true
+model:
+  name: slow_r50
+  num_classes: 3
+  pretrained: true
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  sample_rate: 8
+  num_frames: 8
+trainer:
+  max_epochs: 15
+  min_epochs: 5
+  accelerator: auto
+  devices: auto
+  strategy: auto
+  precision: bf16-mixed
+  accumulate_grad_batches: 1
+  checkpoint:
+    monitor: val/accuracy
+    mode: max
+    save_top_k: 2
+    save_last: true
+  early_stopping:
+    monitor: val/accuracy
+    patience: 5
+    mode: max
+    min_epochs: 5
+  log_every_n_steps: 10
+  val_check_interval: 1.0
+  check_val_every_n_epoch: 1
+  gradient_clip_val: 1.0
+  gradient_clip_algorithm: norm
+  deterministic: false
+checkpoint_path: null

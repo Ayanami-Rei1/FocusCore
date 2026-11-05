@@ -1,0 +1,54 @@
+[32mActivated conda/uv virtual environment at [36m/venv/main[0m
+=== R1_r50_random model=resnet50 root=data/ouc-cge-320 code=reviewed-working-tree start=2026-10-26T14:41:44+00:00 elapsed=0min
+CMD: python -m src.train +experiment=resnet50_ouc_cge_baseline trainer.max_epochs=10 data.batch_size=16 data.root=data/ouc-cge-320 paths.output_dir=outputs/review/R1_r50_random mlflow.experiment_name=review_grouped hydra.run.dir=outputs/review/R1_r50_random/hydra
+R1_r50_random rc=0 wall=410s code=reviewed-working-tree
+BEST_CKPT=/workspace/focus-core/outputs/review/R1_r50_random/checkpoints/epoch=06-val_acc=0.9961.ckpt
+MLFLOW run=eb75689b2f994c028d1fa2c0049c7a1c best_val=0.9961038827896118 best_epoch=6.0 final_epoch=10.0 test_acc=0.993514895439148 test_f1=0.9935976266860962 train_acc_last=0.9896103739738464
+eval R1_r50_random ckpt=/workspace/focus-core/outputs/review/R1_r50_random/checkpoints/epoch=06-val_acc=0.9961.ckpt
+  eval test rc=0 "lightning_test_accuracy": 0.993514895439148
+  eval val rc=0 "lightning_test_accuracy": 0.9961038827896118
+  Skipping-count train log: 0
+R1_r50_random wall_with_eval=439s
+=== R2_r50_grp27a model=resnet50 root=data/grp27a code=reviewed-working-tree start=2026-10-26T14:49:03+00:00 elapsed=7min
+CMD: python -m src.train +experiment=resnet50_ouc_cge_baseline trainer.max_epochs=10 data.batch_size=16 data.root=data/grp27a paths.output_dir=outputs/review/R2_r50_grp27a mlflow.experiment_name=review_grouped hydra.run.dir=outputs/review/R2_r50_grp27a/hydra
+R2_r50_grp27a rc=0 wall=393s code=reviewed-working-tree
+BEST_CKPT=/workspace/focus-core/outputs/review/R2_r50_grp27a/checkpoints/epoch=02-val_acc=0.6005.ckpt
+MLFLOW run=62816cb8be4242879ad2cce903cd45b7 best_val=0.6005188226699829 best_epoch=2.0 final_epoch=10.0 test_acc=0.503238320350647 test_f1=0.45922285318374634 train_acc_last=0.992001473903656
+eval R2_r50_grp27a ckpt=/workspace/focus-core/outputs/review/R2_r50_grp27a/checkpoints/epoch=02-val_acc=0.6005.ckpt
+  eval test rc=0 "lightning_test_accuracy": 0.503238320350647
+  eval val rc=0 "lightning_test_accuracy": 0.6005188226699829
+  Skipping-count train log: 0
+R2_r50_grp27a wall_with_eval=424s
+budget: after R1+R2 elapsed=863s per_r50=431s projected_total=5325s budget=10800s skip_R3=0
+=== R3_r50_grp27b model=resnet50 root=data/grp27b code=reviewed-working-tree start=2026-10-26T14:56:07+00:00 elapsed=14min
+CMD: python -m src.train +experiment=resnet50_ouc_cge_baseline trainer.max_epochs=10 data.batch_size=16 data.root=data/grp27b paths.output_dir=outputs/review/R3_r50_grp27b mlflow.experiment_name=review_grouped hydra.run.dir=outputs/review/R3_r50_grp27b/hydra
+R3_r50_grp27b rc=0 wall=465s code=reviewed-working-tree
+BEST_CKPT=/workspace/focus-core/outputs/review/R3_r50_grp27b/checkpoints/epoch=01-val_acc=0.6314.ckpt
+MLFLOW run=527baed2e4cb497d9c486d8e8523fa55 best_val=0.6313775777816772 best_epoch=1.0 final_epoch=10.0 test_acc=0.526589572429657 test_f1=0.4553336799144745 train_acc_last=0.9907407164573669
+eval R3_r50_grp27b ckpt=/workspace/focus-core/outputs/review/R3_r50_grp27b/checkpoints/epoch=01-val_acc=0.6314.ckpt
+  eval test rc=0 "lightning_test_accuracy": 0.526589572429657
+  eval val rc=0 "lightning_test_accuracy": 0.6313775777816772
+  Skipping-count train log: 0
+R3_r50_grp27b wall_with_eval=497s
+=== R4_r50_grp17 model=resnet50 root=data/grp17 code=reviewed-working-tree start=2026-10-26T15:04:24+00:00 elapsed=22min
+CMD: python -m src.train +experiment=resnet50_ouc_cge_baseline trainer.max_epochs=10 data.batch_size=16 data.root=data/grp17 paths.output_dir=outputs/review/R4_r50_grp17 mlflow.experiment_name=review_grouped hydra.run.dir=outputs/review/R4_r50_grp17/hydra
+R4_r50_grp17 rc=0 wall=486s code=reviewed-working-tree
+BEST_CKPT=/workspace/focus-core/outputs/review/R4_r50_grp17/checkpoints/epoch=05-val_acc=0.4013.ckpt
+MLFLOW run=c2df6629054f41358f1cd7cb4d6cadbe best_val=0.4012987017631531 best_epoch=5.0 final_epoch=10.0 test_acc=0.6902597546577454 test_f1=0.6308885812759399 train_acc_last=0.9895833134651184
+eval R4_r50_grp17 ckpt=/workspace/focus-core/outputs/review/R4_r50_grp17/checkpoints/epoch=05-val_acc=0.4013.ckpt
+  eval test rc=0 "lightning_test_accuracy": 0.6902597546577454
+  eval val rc=0 "lightning_test_accuracy": 0.4012987017631531
+  Skipping-count train log: 0
+R4_r50_grp17 wall_with_eval=517s
+budget: before R5 remaining=8923s slow_epochs=15
+=== R5_slow_grp27a model=slow root=data/grp27a code=reviewed-working-tree start=2026-10-26T15:13:01+00:00 elapsed=31min
+CMD: python -m src.train +experiment=baseline_ouc_cge trainer.early_stopping.patience=5 trainer.early_stopping.min_epochs=5 data.batch_size=32 data.num_workers=16 trainer.precision=bf16-mixed trainer.max_epochs=15 data.root=data/grp27a paths.output_dir=outputs/review/R5_slow_grp27a mlflow.experiment_name=review_grouped hydra.run.dir=outputs/review/R5_slow_grp27a/hydra
+R5_slow_grp27a rc=0 wall=1126s code=reviewed-working-tree
+BEST_CKPT=/workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5422.ckpt
+MLFLOW run=b1446db242914b32a3975dda288dcd43 best_val=0.5421530604362488 best_epoch=1.0 final_epoch=12.0 test_acc=0.5088177919387817 test_f1=0.45166030526161194 train_acc_last=0.9954545497894287
+eval R5_slow_grp27a ckpt=/workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5422.ckpt
+  eval test rc=0 "lightning_test_accuracy": 0.5088177919387817
+  eval val rc=0 "lightning_test_accuracy": 0.5421530604362488
+  Skipping-count train log: 0
+R5_slow_grp27a wall_with_eval=1195s
+ALL_DONE total=3072s

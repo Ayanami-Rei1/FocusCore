@@ -1,0 +1,7 @@
+[32mActivated conda/uv virtual environment at [36m/venv/main[0m
+R2_r50_grp27a last rc=0 "lightning_test_accuracy": 0.4378238320350647
+R3_r50_grp27b last rc=0 "lightning_test_accuracy": 0.545086681842804
+R4_r50_grp17 last rc=0 "lightning_test_accuracy": 0.7590909004211426
+R5_slow_grp27a last rc=0 "lightning_test_accuracy": 0.45003265142440796
+R1_r50_random last rc=0 "lightning_test_accuracy": 0.9948119521141052
+LAST_EVAL_DONE

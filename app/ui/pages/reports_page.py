@@ -378,7 +378,9 @@ class ReportsPage(QWidget):
         if not path:
             return None
         path = Path(path)
-        return path if path.suffix.lower() == ".pdf" else path.with_suffix(".pdf")
+        # Append rather than Path.with_suffix: a name like "Лекция 26.09" must
+        # become "Лекция 26.09.pdf", not "Лекция 26.pdf".
+        return path if path.suffix.lower() == ".pdf" else path.with_name(path.name + ".pdf")
 
     def _offer_another_folder(self) -> bool:
         """Report missing write access; True if the user wants to pick again."""

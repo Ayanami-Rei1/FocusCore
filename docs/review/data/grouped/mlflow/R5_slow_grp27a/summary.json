@@ -1,0 +1,108 @@
+{
+  "run_id": "b1446db242914b32a3975dda288dcd43",
+  "experiment_id": "900803065758929564",
+  "best_epoch": {
+    "last": 1.0,
+    "last_step": 0,
+    "n": 2,
+    "max": 1.0,
+    "min": 0.0
+  },
+  "best_val/accuracy": {
+    "last": 0.5421530604362488,
+    "last_step": 0,
+    "n": 2,
+    "max": 0.5421530604362488,
+    "min": 0.3800259530544281
+  },
+  "epoch": {
+    "last": 12.0,
+    "last_step": 1980,
+    "n": 223,
+    "max": 12.0,
+    "min": 0.0
+  },
+  "final_epoch": {
+    "last": 12.0,
+    "last_step": 0,
+    "n": 1,
+    "max": 12.0,
+    "min": 12.0
+  },
+  "lr-AdamW": {
+    "last": 1.7378034985236535e-05,
+    "last_step": 1815,
+    "n": 12,
+    "max": 0.0001,
+    "min": 1.7378034985236535e-05
+  },
+  "test/accuracy": {
+    "last": 0.5088177919387817,
+    "last_step": 1980,
+    "n": 1,
+    "max": 0.5088177919387817,
+    "min": 0.5088177919387817
+  },
+  "test/f1_macro": {
+    "last": 0.45166030526161194,
+    "last_step": 1980,
+    "n": 1,
+    "max": 0.45166030526161194,
+    "min": 0.45166030526161194
+  },
+  "test/loss": {
+    "last": 1.7136977910995483,
+    "last_step": 1980,
+    "n": 1,
+    "max": 1.7136977910995483,
+    "min": 1.7136977910995483
+  },
+  "train/accuracy": {
+    "last": 0.9954545497894287,
+    "last_step": 1979,
+    "n": 12,
+    "max": 0.9958333373069763,
+    "min": 0.8045454621315002
+  },
+  "train/loss_epoch": {
+    "last": 0.014032193459570408,
+    "last_step": 1979,
+    "n": 12,
+    "max": 0.4788009226322174,
+    "min": 0.012017777189612389
+  },
+  "train/loss_step": {
+    "last": 0.02136058360338211,
+    "last_step": 1979,
+    "n": 198,
+    "max": 0.9791259765625,
+    "min": 3.5043805837631226e-05
+  },
+  "val/accuracy": {
+    "last": 0.3657587468624115,
+    "last_step": 1979,
+    "n": 12,
+    "max": 0.5421530604362488,
+    "min": 0.3527885973453522
+  },
+  "val/f1_macro": {
+    "last": 0.34581613540649414,
+    "last_step": 1979,
+    "n": 12,
+    "max": 0.5028152465820312,
+    "min": 0.34180009365081787
+  },
+  "val/loss": {
+    "last": 3.1588664054870605,
+    "last_step": 1979,
+    "n": 12,
+    "max": 3.682147264480591,
+    "min": 1.5183557271957397
+  },
+  "param_num_classes": "3",
+  "param_learning_rate": "0.0001",
+  "param_weight_decay": "0.0001",
+  "param_best_checkpoint_path": "/workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5422.ckpt",
+  "param_last_checkpoint_path": "/workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/last.ckpt",
+  "param_output_dir": "outputs/review/R5_slow_grp27a"
+}

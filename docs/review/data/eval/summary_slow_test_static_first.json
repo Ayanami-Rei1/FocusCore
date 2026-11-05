@@ -1,0 +1,37 @@
+{
+  "tag": "slow_test_static_first",
+  "model": "slow",
+  "ckpt": "outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt",
+  "split": "test",
+  "mode": "static_first",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 762,
+  "dropped_by_window_filter": 9,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.9881889820098877,
+  "lightning_test_f1_macro": 0.9871425628662109,
+  "lightning_test_loss": 0.029648417606949806,
+  "sklearn_accuracy": 0.9881889763779528,
+  "sklearn_f1_macro": 0.987142516810478,
+  "confusion_rows_true_low_mid_high": [
+    [
+      320,
+      2,
+      2
+    ],
+    [
+      0,
+      188,
+      1
+    ],
+    [
+      0,
+      4,
+      245
+    ]
+  ],
+  "n_errors": 9,
+  "mean_max_prob": 0.9966335892677307,
+  "seconds": 17.1
+}

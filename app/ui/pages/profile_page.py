@@ -346,6 +346,18 @@ class ProfilePage(QWidget):
         self._task = None
         self._sync_requested = False
         self.stack.setEnabled(True)
+        # Sign-in stores the account before synchronizing; if only the
+        # synchronization failed, the user is signed in and must be let in.
+        signed_in_meanwhile = (
+            self.stack.currentIndex() != PROFILE_VIEW and self._service.account is not None
+        )
+        self._explain_failure(exc, wrong_credentials_text)
+        if signed_in_meanwhile:
+            self._show_account_or_login()
+            self.signed_in.emit()
+
+    def _explain_failure(self, exc: Exception, wrong_credentials_text: str) -> None:
+        """Show the failure of a request in terms of the scenario."""
         if isinstance(exc, CloudUnavailableError):
             text = OFFLINE_TEXT if self._service.is_configured else NOT_CONFIGURED_TEXT
             self._show_account_or_login()

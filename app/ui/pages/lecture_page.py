@@ -260,13 +260,18 @@ class LecturePage(QWidget):
         return self._clock.state in (SessionState.RUNNING, SessionState.PAUSED)
 
     def shutdown(self) -> None:
-        """Stop analysis and recording; called when the window closes.
+        """Save a running lecture and stop analysis and recording; called when the window closes.
 
-        Transcriptions that are still running are given time to finish,
-        because a thread must not be destroyed while it runs.
+        The engagement series lives only in memory until the session is
+        finished, so closing the window finishes the lecture instead of
+        discarding it. Transcriptions that are still running are given time
+        to finish, because a thread must not be destroyed while it runs.
         """
-        self._stop_worker()
-        self._stop_recording()
+        if self.is_lecture_running():
+            self._finish_session()
+        else:
+            self._stop_worker()
+            self._stop_recording()
         self._release_audio()
         for worker in self._transcribers:
             worker.wait(TRANSCRIPTION_WAIT_MS)
@@ -521,13 +526,17 @@ class LecturePage(QWidget):
         self.indicator.show_neutral("Нет данных")
 
     def _finish_session(self) -> None:
-        """Stop analysis, save the series and the summary, return to idle."""
+        """Stop analysis, save the series and the summary, return to idle.
+
+        The clock is read before the analysis thread is stopped: stopping
+        waits for the running inference, and that wait is not lecture time.
+        """
         if self._session_id is None:
             return
-        self._stop_worker()
-        self._stop_recording()
         self._timer.stop()
         duration = self._clock.finish()
+        self._stop_worker()
+        self._stop_recording()
         if self._is_file:
             duration = round(self._video_position)
         values = [value for _, value in self._points]
