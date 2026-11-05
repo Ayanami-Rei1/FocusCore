@@ -1,0 +1,37 @@
+{
+  "tag": "R5_slow_grp27a_val",
+  "model": "slow",
+  "ckpt": "/workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5422.ckpt",
+  "split": "val",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 771,
+  "dropped_by_window_filter": 0,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.5421530604362488,
+  "lightning_test_f1_macro": 0.5028152465820312,
+  "lightning_test_loss": 1.7765253782272339,
+  "sklearn_accuracy": 0.5421530479896238,
+  "sklearn_f1_macro": 0.5028152451494129,
+  "confusion_rows_true_low_mid_high": [
+    [
+      250,
+      44,
+      12
+    ],
+    [
+      128,
+      55,
+      18
+    ],
+    [
+      115,
+      36,
+      113
+    ]
+  ],
+  "n_errors": 353,
+  "mean_max_prob": 0.8216522932052612,
+  "seconds": 19.8
+}

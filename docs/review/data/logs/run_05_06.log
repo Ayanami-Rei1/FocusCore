@@ -1,0 +1,417 @@
+[32mActivated conda/uv virtual environment at [36m/venv/main[0m
+=== --model slow --ckpt outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt --split test --mode identity --tag slow_test
+Seed set to 42
+Dropped 1 malformed manifest row(s) from test.csv
+split=test: filtered out 9/771 clips (short/missing/corrupt)
+Dropped 1 malformed manifest row(s) from test.csv
+split=test manifest_rows=771 after_window_filter=762 window=64
+Downloading: "https://github.com/facebookresearch/pytorchvideo/zipball/main" to /root/.cache/torch/hub/main.zip
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 16. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 10. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+{
+  "tag": "slow_test",
+  "model": "slow",
+  "ckpt": "outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt",
+  "split": "test",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 762,
+  "dropped_by_window_filter": 9,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.9986876845359802,
+  "lightning_test_f1_macro": 0.9984478950500488,
+  "lightning_test_loss": 0.00456434627994895,
+  "sklearn_accuracy": 0.9986876640419947,
+  "sklearn_f1_macro": 0.9984478240300229,
+  "confusion_rows_true_low_mid_high": [
+    [
+      324,
+      0,
+      0
+    ],
+    [
+      0,
+      188,
+      1
+    ],
+    [
+      0,
+      0,
+      249
+    ]
+  ],
+  "n_errors": 1,
+  "mean_max_prob": 0.9989662766456604,
+  "seconds": 27.7
+}
+=== --model slow --ckpt outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt --split val --mode identity --tag slow_val
+Seed set to 42
+split=val: filtered out 10/770 clips (short/missing/corrupt)
+split=val manifest_rows=770 after_window_filter=760 window=64
+Using cache found in /root/.cache/torch/hub/facebookresearch_pytorchvideo_main
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 16. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 8. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+{
+  "tag": "slow_val",
+  "model": "slow",
+  "ckpt": "outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt",
+  "split": "val",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 770,
+  "evaluated": 760,
+  "dropped_by_window_filter": 10,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 1.0,
+  "lightning_test_f1_macro": 1.0,
+  "lightning_test_loss": 0.0013780688168480992,
+  "sklearn_accuracy": 1.0,
+  "sklearn_f1_macro": 1.0,
+  "confusion_rows_true_low_mid_high": [
+    [
+      305,
+      0,
+      0
+    ],
+    [
+      0,
+      199,
+      0
+    ],
+    [
+      0,
+      0,
+      256
+    ]
+  ],
+  "n_errors": 0,
+  "mean_max_prob": 0.9989051222801208,
+  "seconds": 26.3
+}
+=== --model resnet50 --ckpt outputs/resnet50_single_frame_best/accuracy=0.9961.ckpt --split test --mode identity --tag resnet50_test
+Seed set to 42
+Dropped 1 malformed manifest row(s) from test.csv
+Dropped 1 malformed manifest row(s) from test.csv
+split=test manifest_rows=771 after_window_filter=771 window=1
+Downloading: "https://github.com/pytorch/vision/zipball/v0.10.0" to /root/.cache/torch/hub/v0.10.0.zip
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 16. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 3. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+{
+  "tag": "resnet50_test",
+  "model": "resnet50",
+  "ckpt": "outputs/resnet50_single_frame_best/accuracy=0.9961.ckpt",
+  "split": "test",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 771,
+  "dropped_by_window_filter": 0,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.993514895439148,
+  "lightning_test_f1_macro": 0.9935976266860962,
+  "lightning_test_loss": 0.02311607263982296,
+  "sklearn_accuracy": 0.993514915693904,
+  "sklearn_f1_macro": 0.9935976512187903,
+  "confusion_rows_true_low_mid_high": [
+    [
+      321,
+      1,
+      3
+    ],
+    [
+      0,
+      189,
+      0
+    ],
+    [
+      0,
+      1,
+      256
+    ]
+  ],
+  "n_errors": 5,
+  "mean_max_prob": 0.9964604377746582,
+  "seconds": 20.4
+}
+=== --model slow --ckpt outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt --split test --mode shuffle --tag slow_test_shuffle
+Seed set to 42
+Dropped 1 malformed manifest row(s) from test.csv
+Dropped 1 malformed manifest row(s) from test.csv
+split=test manifest_rows=771 after_window_filter=762 window=64
+Using cache found in /root/.cache/torch/hub/facebookresearch_pytorchvideo_main
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 16. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 10. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+{
+  "tag": "slow_test_shuffle",
+  "model": "slow",
+  "ckpt": "outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt",
+  "split": "test",
+  "mode": "shuffle",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 762,
+  "dropped_by_window_filter": 9,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.9960629940032959,
+  "lightning_test_f1_macro": 0.9957106709480286,
+  "lightning_test_loss": 0.007016999647021294,
+  "sklearn_accuracy": 0.9960629921259843,
+  "sklearn_f1_macro": 0.995710648451955,
+  "confusion_rows_true_low_mid_high": [
+    [
+      324,
+      0,
+      0
+    ],
+    [
+      0,
+      188,
+      1
+    ],
+    [
+      1,
+      1,
+      247
+    ]
+  ],
+  "n_errors": 3,
+  "mean_max_prob": 0.9982994794845581,
+  "seconds": 14.8
+}
+=== --model slow --ckpt outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt --split test --mode reverse --tag slow_test_reverse
+Seed set to 42
+Dropped 1 malformed manifest row(s) from test.csv
+Dropped 1 malformed manifest row(s) from test.csv
+split=test manifest_rows=771 after_window_filter=762 window=64
+Using cache found in /root/.cache/torch/hub/facebookresearch_pytorchvideo_main
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 16. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 10. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+{
+  "tag": "slow_test_reverse",
+  "model": "slow",
+  "ckpt": "outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt",
+  "split": "test",
+  "mode": "reverse",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 762,
+  "dropped_by_window_filter": 9,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.9973753094673157,
+  "lightning_test_f1_macro": 0.9968976974487305,
+  "lightning_test_loss": 0.00599314970895648,
+  "sklearn_accuracy": 0.9973753280839895,
+  "sklearn_f1_macro": 0.9968976434839888,
+  "confusion_rows_true_low_mid_high": [
+    [
+      324,
+      0,
+      0
+    ],
+    [
+      0,
+      188,
+      1
+    ],
+    [
+      0,
+      1,
+      248
+    ]
+  ],
+  "n_errors": 2,
+  "mean_max_prob": 0.9989405870437622,
+  "seconds": 14.5
+}
+=== --model slow --ckpt outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt --split test --mode static_center --tag slow_test_static_center
+Seed set to 42
+Dropped 1 malformed manifest row(s) from test.csv
+Dropped 1 malformed manifest row(s) from test.csv
+split=test manifest_rows=771 after_window_filter=762 window=64
+Using cache found in /root/.cache/torch/hub/facebookresearch_pytorchvideo_main
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 16. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 10. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+{
+  "tag": "slow_test_static_center",
+  "model": "slow",
+  "ckpt": "outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt",
+  "split": "test",
+  "mode": "static_center",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 762,
+  "dropped_by_window_filter": 9,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.9881889820098877,
+  "lightning_test_f1_macro": 0.9874486923217773,
+  "lightning_test_loss": 0.03556196764111519,
+  "sklearn_accuracy": 0.9881889763779528,
+  "sklearn_f1_macro": 0.9874487017461794,
+  "confusion_rows_true_low_mid_high": [
+    [
+      319,
+      4,
+      1
+    ],
+    [
+      0,
+      188,
+      1
+    ],
+    [
+      1,
+      2,
+      246
+    ]
+  ],
+  "n_errors": 9,
+  "mean_max_prob": 0.9969754815101624,
+  "seconds": 14.6
+}
+=== --model slow --ckpt outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt --split test --mode static_first --tag slow_test_static_first
+Seed set to 42
+Dropped 1 malformed manifest row(s) from test.csv
+Dropped 1 malformed manifest row(s) from test.csv
+split=test manifest_rows=771 after_window_filter=762 window=64
+Using cache found in /root/.cache/torch/hub/facebookresearch_pytorchvideo_main
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 16. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 10. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+{
+  "tag": "slow_test_static_first",
+  "model": "slow",
+  "ckpt": "outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt",
+  "split": "test",
+  "mode": "static_first",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 762,
+  "dropped_by_window_filter": 9,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.9881889820098877,
+  "lightning_test_f1_macro": 0.9871425628662109,
+  "lightning_test_loss": 0.029648417606949806,
+  "sklearn_accuracy": 0.9881889763779528,
+  "sklearn_f1_macro": 0.987142516810478,
+  "confusion_rows_true_low_mid_high": [
+    [
+      320,
+      2,
+      2
+    ],
+    [
+      0,
+      188,
+      1
+    ],
+    [
+      0,
+      4,
+      245
+    ]
+  ],
+  "n_errors": 9,
+  "mean_max_prob": 0.9966335892677307,
+  "seconds": 17.1
+}
+=== --model slow --ckpt outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt --split test --mode identity --precision 32 --tag slow_test_fp32
+Seed set to 42
+Dropped 1 malformed manifest row(s) from test.csv
+Dropped 1 malformed manifest row(s) from test.csv
+split=test manifest_rows=771 after_window_filter=762 window=64
+Using cache found in /root/.cache/torch/hub/facebookresearch_pytorchvideo_main
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 16. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 10. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+{
+  "tag": "slow_test_fp32",
+  "model": "slow",
+  "ckpt": "outputs/baseline_ouc_cge/2026-05-31_15-35-39/checkpoints/epoch=30-val/accuracy=1.0000.ckpt",
+  "split": "test",
+  "mode": "identity",
+  "precision": "32",
+  "manifest_rows": 771,
+  "evaluated": 762,
+  "dropped_by_window_filter": 9,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.9986876845359802,
+  "lightning_test_f1_macro": 0.9984478950500488,
+  "lightning_test_loss": 0.0045004431158304214,
+  "sklearn_accuracy": 0.9986876640419947,
+  "sklearn_f1_macro": 0.9984478240300229,
+  "confusion_rows_true_low_mid_high": [
+    [
+      324,
+      0,
+      0
+    ],
+    [
+      0,
+      188,
+      1
+    ],
+    [
+      0,
+      0,
+      249
+    ]
+  ],
+  "n_errors": 1,
+  "mean_max_prob": 0.9989777207374573,
+  "seconds": 15.0
+}
+ALL_DONE

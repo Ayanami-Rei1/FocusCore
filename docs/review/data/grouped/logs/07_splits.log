@@ -1,0 +1,33 @@
+[32mActivated conda/uv virtual environment at [36m/venv/main[0m
+clips=7701 labels(low/mid/high)=[3028, 2041, 2632] clusters@27.5=101 largest=1163
+restart candidates: score p0/p50 = 0.000/0.162, min_share max = 0.265, overlap min = 0.00
+chosen restart 396: score=0.000 min_share=0.261 test overlap with avoided=0.00 (pure size-order restart 0: score=0.222 min_share=0.237)
+  train n=5386 (0.699) labels=[2117, 1427, 1842] frac=[0.393, 0.265, 0.342] clusters=83 top5=[880, 348, 336, 318, 312]
+  val   n= 771 (0.100) labels=[306, 201, 264] frac=[0.397, 0.261, 0.342] clusters=9 top5=[333, 215, 163, 32, 16]
+  test  n=1544 (0.200) labels=[605, 413, 526] frac=[0.392, 0.267, 0.341] clusters=9 top5=[1163, 214, 76, 49, 30]
+  [grouped] test->train nearest RMSE: median=65.6 p5=31.4 p95=67.7 min=27.6 <=10:0.000 <=17.5:0.000 <=27.5:0.000
+  [random] test->train nearest RMSE: median=2.7 p5=0.0 p95=15.3 min=0.0 <=10:0.840 <=17.5:0.960 <=27.5:0.987
+  clips under 64 frames (grouped) train/val/test: [100, 0, 13]
+wrote data/grp27a (videos -> ../ouc-cge-320/videos)
+clips=7701 labels(low/mid/high)=[3028, 2041, 2632] clusters@27.5=101 largest=1163
+avoiding 9 test clusters of /workspace/review_grouped/splits/split_grp27a.csv
+restart candidates: score p0/p50 = 0.000/0.161, min_share max = 0.265, overlap min = 0.00
+chosen restart 122: score=0.125 min_share=0.244 test overlap with avoided=0.02 (pure size-order restart 0: score=0.222 min_share=0.237)
+  train n=5187 (0.674) labels=[2119, 1403, 1665] frac=[0.409, 0.27, 0.321] clusters=84 top5=[1163, 336, 318, 224, 215]
+  val   n= 784 (0.102) labels=[303, 216, 265] frac=[0.386, 0.276, 0.338] clusters=7 top5=[333, 214, 163, 51, 18]
+  test  n=1730 (0.225) labels=[606, 422, 702] frac=[0.35, 0.244, 0.406] clusters=10 top5=[880, 348, 312, 108, 34]
+  [grouped] test->train nearest RMSE: median=38.9 p5=33.2 p95=47.4 min=27.6 <=10:0.000 <=17.5:0.000 <=27.5:0.000
+  [random] test->train nearest RMSE: median=2.7 p5=0.0 p95=15.3 min=0.0 <=10:0.840 <=17.5:0.960 <=27.5:0.987
+  clips under 64 frames (grouped) train/val/test: [113, 0, 0]
+wrote data/grp27b (videos -> ../ouc-cge-320/videos)
+clips=7701 labels(low/mid/high)=[3028, 2041, 2632] clusters@17.5=530 largest=410
+restart candidates: score p0/p50 = 0.000/0.002, min_share max = 0.265, overlap min = 0.00
+chosen restart 1: score=0.000 min_share=0.265 test overlap with avoided=0.00 (pure size-order restart 0: score=0.002 min_share=0.264)
+  train n=5391 (0.700) labels=[2119, 1429, 1843] frac=[0.393, 0.265, 0.342] clusters=437 top5=[300, 155, 152, 128, 121]
+  val   n= 770 (0.100) labels=[303, 204, 263] frac=[0.394, 0.265, 0.342] clusters=26 top5=[208, 151, 95, 86, 70]
+  test  n=1540 (0.200) labels=[606, 408, 526] frac=[0.394, 0.265, 0.342] clusters=67 top5=[410, 218, 213, 179, 105]
+  [grouped] test->train nearest RMSE: median=31.3 p5=21.6 p95=41.3 min=17.5 <=10:0.000 <=17.5:0.000 <=27.5:0.301
+  [random] test->train nearest RMSE: median=2.7 p5=0.0 p95=15.3 min=0.0 <=10:0.840 <=17.5:0.960 <=27.5:0.987
+  clips under 64 frames (grouped) train/val/test: [106, 0, 7]
+wrote data/grp17 (videos -> ../ouc-cge-320/videos)
+SPLITS_DONE

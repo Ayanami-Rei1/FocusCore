@@ -35,7 +35,9 @@ class MLflowModelCheckpoint(Callback):
     def on_validation_epoch_end(
         self, trainer: L.Trainer, pl_module: L.LightningModule
     ) -> None:
-        if not trainer.is_global_zero:
+        if not trainer.is_global_zero or trainer.sanity_checking:
+            # The sanity check runs 2 val batches before epoch 0 and populates
+            # callback_metrics; those values are not an epoch result.
             return
 
         from mlflow import MlflowClient
@@ -60,11 +62,27 @@ class MLflowModelCheckpoint(Callback):
         client.log_metric(mlflow_logger.run_id, f"best_{self.monitor}", self.best_value)
         client.log_metric(mlflow_logger.run_id, "best_epoch", trainer.current_epoch)
 
+    @staticmethod
+    def _hydra_dir(default_root_dir: str) -> Path | None:
+        """Locate the ``.hydra`` directory of this run, if any.
+
+        Hydra writes it under its own run dir (``hydra.run.dir``), which is
+        not ``paths.output_dir``; fall back to the trainer's root dir.
+        """
+        candidates = []
+        try:
+            from hydra.core.hydra_config import HydraConfig
+
+            candidates.append(Path(HydraConfig.get().runtime.output_dir) / ".hydra")
+        except ValueError:  # Hydra not initialised (tests, plain python calls)
+            pass
+        candidates.append(Path(default_root_dir) / ".hydra")
+        return next((c for c in candidates if c.exists()), None)
+
     def on_train_end(self, trainer: L.Trainer, pl_module: L.LightningModule) -> None:
         if not trainer.is_global_zero:
             return
 
-        import mlflow
         from mlflow import MlflowClient
 
         mlflow_logger = self._get_mlflow_logger(trainer)
@@ -89,10 +107,14 @@ class MLflowModelCheckpoint(Callback):
 
         client.log_param(run_id, "output_dir", str(trainer.default_root_dir))
 
-        with mlflow.start_run(run_id=run_id):
-            hydra_dir = Path(trainer.default_root_dir) / ".hydra"
-            if hydra_dir.exists():
-                mlflow.log_artifacts(str(hydra_dir), artifact_path="hydra_config")
+        # Use the logger's client (its tracking URI), not the global mlflow
+        # context: `mlflow.start_run(run_id)` looks the run up in the *global*
+        # tracking URI, which differs from the logger's as soon as
+        # `mlflow.tracking_uri` is configured, and it also terminates the run
+        # before trainer.test() logs the test metrics.
+        hydra_dir = self._hydra_dir(str(trainer.default_root_dir))
+        if hydra_dir is not None:
+            client.log_artifacts(run_id, str(hydra_dir), artifact_path="hydra_config")
 
 
 class EarlyStoppingWithPatience(Callback):
@@ -116,7 +138,7 @@ class EarlyStoppingWithPatience(Callback):
     def on_validation_epoch_end(
         self, trainer: L.Trainer, pl_module: L.LightningModule
     ) -> None:
-        if trainer.current_epoch < self.min_epochs:
+        if trainer.sanity_checking or trainer.current_epoch < self.min_epochs:
             return
 
         current = trainer.callback_metrics.get(self.monitor)

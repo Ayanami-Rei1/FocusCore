@@ -1,0 +1,107 @@
+{
+  "n_adjacent_pairs": 7696,
+  "p99_random_same_class_cosine": 0.9392569065093994,
+  "p99_random_cross_class_cosine": 0.9247664213180542,
+  "frac_adjacent_center_above_p99_same": 0.3575883575883576,
+  "frac_adjacent_center_above_p99_cross": 0.43503118503118504,
+  "frac_adjacent_lastfirst_above_0_9": 0.5296257796257796,
+  "frac_adjacent_lastfirst_above_0_95": 0.3397869022869023,
+  "chain_thr": 0.9247664213180542,
+  "val_frac_nn_is_id_adjacent": 0.12597402597402596,
+  "val_frac_nn_same_chain": 0.23506493506493506,
+  "val_frac_nn_cos_ge_0_95": 0.7610389610389611,
+  "val_frac_nn_cos_ge_0_90": 0.9987012987012988,
+  "test_frac_nn_is_id_adjacent": 0.19974059662775617,
+  "test_frac_nn_same_chain": 0.28664072632944226,
+  "test_frac_nn_cos_ge_0_95": 0.7717250324254216,
+  "test_frac_nn_cos_ge_0_90": 0.9987029831387808,
+  "logreg_random_split": {
+    "train": {
+      "n": 6160,
+      "acc": 1.0,
+      "f1_macro": 1.0,
+      "confusion": [
+        [
+          2396,
+          0,
+          0
+        ],
+        [
+          0,
+          1653,
+          0
+        ],
+        [
+          0,
+          0,
+          2111
+        ]
+      ]
+    },
+    "val": {
+      "n": 770,
+      "acc": 0.9077922077922078,
+      "f1_macro": 0.9055385800879673,
+      "confusion": [
+        [
+          289,
+          12,
+          6
+        ],
+        [
+          14,
+          177,
+          8
+        ],
+        [
+          20,
+          11,
+          233
+        ]
+      ]
+    },
+    "test": {
+      "n": 771,
+      "acc": 0.9234760051880675,
+      "f1_macro": 0.9188136618416519,
+      "confusion": [
+        [
+          310,
+          8,
+          7
+        ],
+        [
+          14,
+          168,
+          7
+        ],
+        [
+          10,
+          13,
+          234
+        ]
+      ]
+    }
+  },
+  "majority_class_baseline": {
+    "val": 0.3987012987012987,
+    "test": 0.42153047989623865
+  },
+  "class_counts": {
+    "train": [
+      2396,
+      1653,
+      2111
+    ],
+    "val": [
+      307,
+      199,
+      264
+    ],
+    "test": [
+      325,
+      189,
+      257
+    ]
+  }
+}

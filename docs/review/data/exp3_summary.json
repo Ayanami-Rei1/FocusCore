@@ -1,0 +1,52 @@
+{
+  "thr": 0.9247664213180542,
+  "n_clusters": 198,
+  "n_singletons": 163,
+  "largest": 7407,
+  "largest_frac": 0.9618231398519673,
+  "median_size": 1.0,
+  "weighted_purity": 0.41397221140111673,
+  "frac_clusters_pure": 0.9949494949494949,
+  "frac_clips_in_pure_clusters": 0.038176860148032725,
+  "n_clusters_multi_split": 22,
+  "frac_test_with_train_in_cluster": 0.9766536964980544,
+  "frac_val_with_train_in_cluster": 0.974025974025974,
+  "size_pcts": {
+    "p10": 1.0,
+    "p25": 1.0,
+    "p50": 1.0,
+    "p75": 1.0,
+    "p90": 2.0,
+    "p99": 7.290000000000049
+  },
+  "top10_sizes": [
+    7407,
+    49,
+    6,
+    6,
+    5,
+    4,
+    3,
+    3,
+    3,
+    2
+  ],
+  "top10_purity": [
+    0.391,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "n_chains": 4353,
+  "clusters_per_chain_mean": 1.0,
+  "frac_chains_in_single_cluster": 1.0,
+  "n_pairs_above_thr": 435446,
+  "frac_pairs_above_thr_cross_label": 0.4605117511700647,
+  "n_cross_label_pairs_above_thr": 200528
+}

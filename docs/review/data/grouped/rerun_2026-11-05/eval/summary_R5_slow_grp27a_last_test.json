@@ -1,0 +1,37 @@
+{
+  "tag": "R5_slow_grp27a_last_test",
+  "model": "slow",
+  "ckpt": "outputs/review/R5_slow_grp27a/checkpoints/last.ckpt",
+  "split": "test",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 1544,
+  "evaluated": 1531,
+  "dropped_by_window_filter": 13,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.39908555150032043,
+  "lightning_test_f1_macro": 0.30214357376098633,
+  "lightning_test_loss": 4.06007719039917,
+  "sklearn_accuracy": 0.3990855649902025,
+  "sklearn_f1_macro": 0.30214356818703925,
+  "confusion_rows_true_low_mid_high": [
+    [
+      40,
+      3,
+      549
+    ],
+    [
+      39,
+      61,
+      313
+    ],
+    [
+      7,
+      9,
+      510
+    ]
+  ],
+  "n_errors": 920,
+  "mean_max_prob": 0.9586285352706909,
+  "seconds": 14.6
+}

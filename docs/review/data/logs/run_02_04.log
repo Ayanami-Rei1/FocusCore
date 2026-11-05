@@ -1,0 +1,264 @@
+[32mActivated conda/uv virtual environment at [36m/venv/main[0m
+clips=7705 ok=7701
+
+(a) pair similarity distributions
+                      metric                  pair_type     n    mean      p1      p5     p25     p50     p75      p95      p99
+               center_cosine adjacent_same_class(N,N+1)  7696  0.9005  0.7726  0.8034  0.8492  0.9070  0.9554   0.9828   1.0000
+last(N)_to_first(N+1)_cosine adjacent_same_class(N,N+1)  7696  0.9053  0.7679  0.8016  0.8499  0.9101  0.9680   0.9915   0.9943
+           center_thumb_rmse adjacent_same_class(N,N+1)  7696 56.0672  0.0000 10.6829 25.4264 49.8700 91.1375 103.9455 110.1118
+               center_cosine          random_same_class 20000  0.8426  0.7479  0.7791  0.8174  0.8419  0.8674   0.9091   0.9393
+last(N)_to_first(N+1)_cosine          random_same_class 20000  0.8436  0.7484  0.7799  0.8183  0.8430  0.8683   0.9105   0.9385
+           center_thumb_rmse          random_same_class 20000 82.9910 33.7118 44.3048 70.7619 88.8554 96.4227 106.4210 112.1109
+               center_cosine         random_cross_class 20000  0.8395  0.7515  0.7791  0.8162  0.8400  0.8632   0.8993   0.9248
+last(N)_to_first(N+1)_cosine         random_cross_class 20000  0.8402  0.7509  0.7795  0.8171  0.8407  0.8639   0.9007   0.9251
+           center_thumb_rmse         random_cross_class 20000 85.1266 37.9908 49.8936 75.6121 89.6381 97.3318 108.0767 113.8028
+
+chain threshold sweep (chosen thr=0.9248 = p99 of random cross-class cosine)
+   thr  n_chains  median_size  max_size  frac_clips_in_chains_ge2  frac_links_kept
+0.5000         5       2041.0      3028                  1.000000         0.999351
+0.6000         5       2041.0      3028                  1.000000         0.999351
+0.7000        10        106.0      3028                  0.999740         0.998701
+0.8000       336          5.0      1248                  0.989612         0.956369
+0.8500      1964          1.0       312                  0.836255         0.744968
+0.9000      3688          1.0       125                  0.582911         0.521101
+0.9500      5490          1.0        58                  0.369173         0.287106
+0.9248      4353          1.0       125                  0.512791         0.434749
+
+(b) nearest-train-neighbour accuracy
+split         metric     restriction  acc@1  acc@5  nn_score_mean  nn_p1  nn_p5  nn_p25  nn_p50  nn_p75  nn_p95  nn_p99
+  val feature_cosine       any_train 0.9481 0.9338         0.9659 0.9173 0.9311  0.9505  0.9670  0.9819  0.9988  1.0000
+  val feature_cosine different_chain 0.9091 0.8883         0.9607 0.9100 0.9247  0.9461  0.9600  0.9759  0.9970  1.0000
+  val     thumb_rmse       any_train 0.9584 0.9351        19.2508 0.0000 0.8275 10.2577 19.6036 27.2462 38.5006 46.0427
+  val     thumb_rmse different_chain 0.9273 0.8974        21.6769 0.0000 0.8632 13.1905 23.1235 29.8920 40.4605 50.4849
+ test feature_cosine       any_train 0.9455 0.9339         0.9663 0.9161 0.9322  0.9511  0.9676  0.9816  1.0000  1.0000
+ test feature_cosine different_chain 0.8885 0.8742         0.9600 0.9029 0.9245  0.9451  0.9594  0.9752  0.9968  1.0000
+ test     thumb_rmse       any_train 0.9611 0.9455        19.3611 0.0000 0.0902 10.5527 19.2923 27.2169 38.3939 44.9523
+ test     thumb_rmse different_chain 0.9131 0.9014        22.6231 0.0000 0.8862 15.2939 23.9154 30.8521 41.7059 48.2172
+
+(c) logistic regression on frozen center-frame ResNet50 features (published random split)
+  train: n=6160 acc=1.0000 f1_macro=1.0000 confusion=[[2396, 0, 0], [0, 1653, 0], [0, 0, 2111]]
+  val: n=770 acc=0.9078 f1_macro=0.9055 confusion=[[289, 12, 6], [14, 177, 8], [20, 11, 233]]
+  test: n=771 acc=0.9235 f1_macro=0.9188 confusion=[[310, 8, 7], [14, 168, 7], [10, 13, 234]]
+
+summary:
+{
+  "n_adjacent_pairs": 7696,
+  "p99_random_same_class_cosine": 0.9392569065093994,
+  "p99_random_cross_class_cosine": 0.9247664213180542,
+  "frac_adjacent_center_above_p99_same": 0.3575883575883576,
+  "frac_adjacent_center_above_p99_cross": 0.43503118503118504,
+  "frac_adjacent_lastfirst_above_0_9": 0.5296257796257796,
+  "frac_adjacent_lastfirst_above_0_95": 0.3397869022869023,
+  "chain_thr": 0.9247664213180542,
+  "val_frac_nn_is_id_adjacent": 0.12597402597402596,
+  "val_frac_nn_same_chain": 0.23506493506493506,
+  "val_frac_nn_cos_ge_0_95": 0.7610389610389611,
+  "val_frac_nn_cos_ge_0_90": 0.9987012987012988,
+  "test_frac_nn_is_id_adjacent": 0.19974059662775617,
+  "test_frac_nn_same_chain": 0.28664072632944226,
+  "test_frac_nn_cos_ge_0_95": 0.7717250324254216,
+  "test_frac_nn_cos_ge_0_90": 0.9987029831387808,
+  "logreg_random_split": {
+    "train": {
+      "n": 6160,
+      "acc": 1.0,
+      "f1_macro": 1.0,
+      "confusion": [
+        [
+          2396,
+          0,
+          0
+        ],
+        [
+          0,
+          1653,
+          0
+        ],
+        [
+          0,
+          0,
+          2111
+        ]
+      ]
+    },
+    "val": {
+      "n": 770,
+      "acc": 0.9077922077922078,
+      "f1_macro": 0.9055385800879673,
+      "confusion": [
+        [
+          289,
+          12,
+          6
+        ],
+        [
+          14,
+          177,
+          8
+        ],
+        [
+          20,
+          11,
+          233
+        ]
+      ]
+    },
+    "test": {
+      "n": 771,
+      "acc": 0.9234760051880675,
+      "f1_macro": 0.9188136618416519,
+      "confusion": [
+        [
+          310,
+          8,
+          7
+        ],
+        [
+          14,
+          168,
+          7
+        ],
+        [
+          10,
+          13,
+          234
+        ]
+      ]
+    }
+  },
+  "majority_class_baseline": {
+    "val": 0.3987012987012987,
+    "test": 0.42153047989623865
+  },
+  "class_counts": {
+    "train": [
+      2396,
+      1653,
+      2111
+    ],
+    "val": [
+      307,
+      199,
+      264
+    ],
+    "test": [
+      325,
+      189,
+      257
+    ]
+  }
+}
+=== exp3 with thr=0.9247664213180542
+threshold sweep (connected components of cosine >= thr):
+   thr  n_clusters  n_singletons  largest  largest_frac  median_size  weighted_purity  frac_clusters_pure  frac_clips_in_pure_clusters  n_clusters_multi_split  frac_test_with_train_in_cluster  frac_val_with_train_in_cluster
+0.5000           1             0     7701        1.0000       7701.0           0.3932              0.0000                       0.0000                       1                           1.0000                          1.0000
+0.6000           1             0     7701        1.0000       7701.0           0.3932              0.0000                       0.0000                       1                           1.0000                          1.0000
+0.7000           1             0     7701        1.0000       7701.0           0.3932              0.0000                       0.0000                       1                           1.0000                          1.0000
+0.7500           1             0     7701        1.0000       7701.0           0.3932              0.0000                       0.0000                       1                           1.0000                          1.0000
+0.8000           4             3     7698        0.9996          1.0           0.3936              0.7500                       0.0004                       1                           1.0000                          1.0000
+0.8500           4             3     7698        0.9996          1.0           0.3936              0.7500                       0.0004                       1                           1.0000                          1.0000
+0.9000          15            12     7685        0.9979          1.0           0.3945              0.9333                       0.0021                       2                           0.9987                          0.9987
+0.9248         198           163     7407        0.9618          1.0           0.4140              0.9949                       0.0382                      22                           0.9767                          0.9740
+0.9500        2182          1610     1109        0.1440          1.0           0.7934              0.9922                       0.5411                     282                           0.7834                          0.7779
+
+chosen threshold summary:
+{
+  "thr": 0.9247664213180542,
+  "n_clusters": 198,
+  "n_singletons": 163,
+  "largest": 7407,
+  "largest_frac": 0.9618231398519673,
+  "median_size": 1.0,
+  "weighted_purity": 0.41397221140111673,
+  "frac_clusters_pure": 0.9949494949494949,
+  "frac_clips_in_pure_clusters": 0.038176860148032725,
+  "n_clusters_multi_split": 22,
+  "frac_test_with_train_in_cluster": 0.9766536964980544,
+  "frac_val_with_train_in_cluster": 0.974025974025974,
+  "size_pcts": {
+    "p10": 1.0,
+    "p25": 1.0,
+    "p50": 1.0,
+    "p75": 1.0,
+    "p90": 2.0,
+    "p99": 7.290000000000049
+  },
+  "top10_sizes": [
+    7407,
+    49,
+    6,
+    6,
+    5,
+    4,
+    3,
+    3,
+    3,
+    2
+  ],
+  "top10_purity": [
+    0.391,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "n_chains": 4353,
+  "clusters_per_chain_mean": 1.0,
+  "frac_chains_in_single_cluster": 1.0,
+  "n_pairs_above_thr": 435446,
+  "frac_pairs_above_thr_cross_label": 0.4605117511700647,
+  "n_cross_label_pairs_above_thr": 200528
+}
+
+largest 15 clusters:
+ cluster  size  n_low  n_mid  n_high   purity  majority_label  n_train  n_val  n_test  n_splits  n_chains
+       0  7407   2894   1989    2524 0.390711               0     5933    736     738         3      4116
+       4    49     49      0       0 1.000000               0       39      5       5         3         1
+      42     6      0      6       0 1.000000               1        5      1       0         2         5
+      21     6      6      0       0 1.000000               0        5      0       1         2         6
+      30     5      0      5       0 1.000000               1        4      0       1         2         3
+       7     4      0      4       0 1.000000               1        3      1       0         2         3
+      35     3      3      0       0 1.000000               0        3      0       0         1         2
+      23     3      0      3       0 1.000000               1        2      1       0         2         2
+      52     3      0      0       3 1.000000               2        3      0       0         1         3
+       1     2      0      0       2 1.000000               2        1      0       1         2         1
+      59     2      2      0       0 1.000000               0        1      1       0         2         2
+      63     2      2      0       0 1.000000               0        2      0       0         1         2
+       2     2      2      0       0 1.000000               0        1      1       0         2         2
+      22     2      2      0       0 1.000000               0        2      0       0         1         2
+      29     2      0      0       2 1.000000               2        1      1       0         2         2
+contact sheets written
+=== exp4
+n=7701 class_counts=[3028, 2041, 2632] clusters=198 chains=4353
+
+stratified_random_5fold: acc=0.9151±0.0040 f1=0.9122±0.0035 pooled_acc=0.9151
+  pooled confusion (rows=true low/mid/high): [[2825, 115, 88], [115, 1819, 107], [103, 126, 2403]]
+  fold0: n_test=1541 acc=0.9182 f1=0.9153 maj=0.3926 test_counts=[605, 409, 527]
+  fold1: n_test=1540 acc=0.9143 f1=0.9112 maj=0.3929 test_counts=[605, 408, 527]
+  fold2: n_test=1540 acc=0.9097 f1=0.9072 maj=0.3935 test_counts=[606, 408, 526]
+  fold3: n_test=1540 acc=0.9208 f1=0.9168 maj=0.3935 test_counts=[606, 408, 526]
+  fold4: n_test=1540 acc=0.9123 f1=0.9105 maj=0.3935 test_counts=[606, 408, 526]
+
+group_5fold_by_chain: acc=0.8726±0.0218 f1=0.8683±0.0205 pooled_acc=0.8726
+  pooled confusion (rows=true low/mid/high): [[2717, 175, 136], [229, 1646, 166], [160, 115, 2357]]
+  fold0: n_test=1541 acc=0.8306 f1=0.8277 maj=0.3141 test_counts=[484, 529, 528]
+  fold1: n_test=1540 acc=0.8740 f1=0.8735 maj=0.3558 test_counts=[548, 394, 598]
+  fold2: n_test=1540 acc=0.8825 f1=0.8790 maj=0.4409 test_counts=[679, 393, 468]
+  fold3: n_test=1540 acc=0.8838 f1=0.8781 maj=0.3935 test_counts=[606, 355, 579]
+  fold4: n_test=1540 acc=0.8922 f1=0.8831 maj=0.4617 test_counts=[711, 370, 459]
+
+group_5fold_by_cluster: acc=0.7052±0.1499 f1=0.6701±0.1320 pooled_acc=0.4766
+  pooled confusion (rows=true low/mid/high): [[1619, 707, 702], [641, 562, 838], [846, 297, 1489]]
+  fold0: n_test=7407 acc=0.4651 f1=0.4447 maj=0.3907 test_counts=[2894, 1989, 2524]
+  fold1: n_test=74 acc=0.9189 f1=0.8280 maj=0.7703 test_counts=[57, 4, 13]
+  fold2: n_test=74 acc=0.6486 f1=0.6202 maj=0.2703 test_counts=[20, 19, 35]
+  fold3: n_test=73 acc=0.7808 f1=0.7606 maj=0.4247 test_counts=[31, 12, 30]
+  fold4: n_test=73 acc=0.7123 f1=0.6971 maj=0.3562 test_counts=[26, 17, 30]
+
+majority-class baseline (class 0): 0.3932
+ALL_DONE

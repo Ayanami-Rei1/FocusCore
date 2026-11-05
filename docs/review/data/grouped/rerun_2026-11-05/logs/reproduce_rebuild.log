@@ -1,0 +1,194 @@
+Activated conda/uv virtual environment at /venv/main
+=== data
+data/ouc-cge-320/videos present
+=== rebuild: frame thumbnails
+manifest rows: 7705 train=6164 val=770 test=771
+decoded 1000/7705 in 32s
+decoded 2000/7705 in 62s
+decoded 3000/7705 in 90s
+decoded 4000/7705 in 112s
+decoded 5000/7705 in 131s
+decoded 6000/7705 in 148s
+decoded 7000/7705 in 166s
+decode done in 182s
+unreadable clips: 4
+  BAD videos/high/view2631.mp4 train
+  BAD videos/high/view2521.mp4 train
+  BAD videos/high/view2632.mp4 train
+  BAD videos/high/view2630.mp4 train
+--thumbs-only: no ResNet50 features (02, 03 and 04 need them; 03b and 07 do not)
+saved train: 6164 clips, ok=6160
+saved val: 770 clips, ok=770
+saved test: 771 clips, ok=771
+n_frames percentiles (1,5,25,50,75,95,99): [   9.   77.  158.  165.  300.  355. 5068.]
+clips with reported frame count < 64 (dropped by OUCCGEDataset window filter): 117 of 7705
+reported != actual frame count: 0
+=== rebuild: scene clusters
+clip distance (min-over-frame-pairs thumbnail RMSE) reference distributions:
+                 pair_type     n  mean  p0.1    p1    p5   p25   p50   p75    p95
+         random_same_class 20000 79.95  6.53 28.51 40.32 66.62 86.31 93.81 103.49
+        random_cross_class 20000 82.02 29.49 34.96 46.23 72.63 86.93 94.50 104.72
+adjacent_same_class(N,N+1)  7696 43.48  0.37  0.45  0.62  4.38 21.40 88.52 100.93
+      val_to_nearest_train   770  5.26  0.36  0.41  0.53  1.31  2.88  6.99  17.77
+     test_to_nearest_train   771  5.07  0.37  0.44  0.55  1.33  2.71  6.99  15.34
+
+threshold sweep (p1 of random cross-class distance = 34.96):
+ thr  n_clusters  n_singletons  largest  largest_frac  median_size  weighted_purity  frac_clusters_pure  frac_clips_in_pure_clusters  n_clusters_multi_split  frac_test_with_train_in_cluster  frac_val_with_train_in_cluster  below_p1_random_cross
+10.0        1626           836      246        0.0319          1.0           1.0000              1.0000                       1.0000                     473                           0.8781                          0.8688                   True
+12.5        1127           490      256        0.0332          2.0           1.0000              1.0000                       1.0000                     407                           0.9300                          0.9117                   True
+15.0         784           287      407        0.0529          2.0           1.0000              1.0000                       1.0000                     337                           0.9624                          0.9455                   True
+17.5         530           165      410        0.0532          4.0           1.0000              1.0000                       1.0000                     273                           0.9792                          0.9714                   True
+20.0         370           104      490        0.0636          5.0           0.9604              0.9946                       0.9274                     209                           0.9857                          0.9831                   True
+22.5         250            59      491        0.0638          8.0           0.9218              0.9760                       0.8198                     155                           0.9896                          0.9922                   True
+25.0         165            39     1163        0.1510         11.0           0.8688              0.9697                       0.7385                     108                           0.9948                          0.9961                   True
+27.5         101            20     1163        0.1510         17.0           0.7905              0.8911                       0.4510                      69                           0.9961                          0.9974                   True
+30.0          54            11     1990        0.2584         23.5           0.6547              0.7778                       0.1705                      38                           0.9974                          0.9987                   True
+35.0          19             1     2914        0.3784        108.0           0.5182              0.4737                       0.0540                      18                           1.0000                          1.0000                  False
+40.0           8             0     3423        0.4445        492.5           0.4506              0.1250                       0.0064                       8                           1.0000                          1.0000                  False
+
+chosen thr=27.5
+{
+  "thr": 27.5,
+  "n_clusters": 101,
+  "n_singletons": 20,
+  "largest": 1163,
+  "largest_frac": 0.15101934813660564,
+  "median_size": 17.0,
+  "weighted_purity": 0.7905466822490586,
+  "frac_clusters_pure": 0.8910891089108911,
+  "frac_clips_in_pure_clusters": 0.45098039215686275,
+  "n_clusters_multi_split": 69,
+  "frac_test_with_train_in_cluster": 0.9961089494163424,
+  "frac_val_with_train_in_cluster": 0.9974025974025974,
+  "p1_random_cross": 34.962337493896484,
+  "size_pcts": {
+    "p10": 1.0,
+    "p25": 2.0,
+    "p50": 17.0,
+    "p75": 86.0,
+    "p90": 213.0,
+    "p99": 880.0
+  },
+  "top15_sizes": [
+    1163,
+    880,
+    348,
+    336,
+    333,
+    318,
+    312,
+    224,
+    215,
+    214,
+    213,
+    204,
+    169,
+    167,
+    163
+  ],
+  "top15_purity": [
+    0.476,
+    0.798,
+    0.793,
+    0.494,
+    0.742,
+    0.459,
+    1.0,
+    0.741,
+    0.521,
+    0.607,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "n_clusters_ge5": 64,
+  "frac_clips_in_clusters_ge5": 0.9910401246591352,
+  "frac_test_with_train_within_thr": 0.9870298313878081,
+  "frac_test_with_train_within_2thr": 1.0,
+  "nonsingleton_weighted_purity": 0.7900013019138133,
+  "frac_nonsingleton_clusters_pure": 0.8641975308641975,
+  "frac_clips_in_nonsingleton": 0.9974029346838073,
+  "frac_clips_in_pure_nonsingleton": 0.44838332684067006
+}
+
+largest 20 clusters:
+ cluster  size  n_low  n_mid  n_high   purity  majority_label  n_train  n_val  n_test  n_splits  n_chains
+       6  1163    554    253     356 0.476354               0      913    120     130         3        -1
+       0   880      0    178     702 0.797727               2      718     74      88         3        -1
+      28   348    276     72       0 0.793103               0      286     22      40         3        -1
+       1   336    166    113      57 0.494048               0      269     33      34         3        -1
+      26   333    247     86       0 0.741742               0      267     33      33         3        -1
+      11   318    146    128      44 0.459119               0      242     38      38         3        -1
+      36   312    312      0       0 1.000000               0      246     40      26         3        -1
+      10   224      0    166      58 0.741071               1      182     19      23         3        -1
+      35   215     50    112      53 0.520930               1      171     24      20         3        -1
+       5   214      0    130      84 0.607477               1      178     18      18         3        -1
+       8   213      0    213       0 1.000000               1      169     23      21         3        -1
+      25   204      0      0     204 1.000000               2      164     23      17         3        -1
+      20   169      0    169       0 1.000000               1      151      9       9         3        -1
+       7   167    167      0       0 1.000000               0      125     22      20         3        -1
+      44   163      0      0     163 1.000000               2      133     16      14         3        -1
+       2   155      0      0     155 1.000000               2      125     12      18         3        -1
+      16   141      0      0     141 1.000000               2      112     14      15         3        -1
+      17   136    136      0       0 1.000000               0      110     14      12         3        -1
+       9   127    127      0       0 1.000000               0       97     15      15         3        -1
+      21   112      0      0     112 1.000000               2       85     14      13         3        -1
+contact sheets written
+## Scene clusters
+
+| file / threshold | clips | clusters (published / rebuilt) | result |
+|---|---|---|---|
+| scene_clusters.csv | 7701 | 101 / 101 | byte-identical file |
+| thr 10 | 7701 | 1626 / 1626 | byte-identical file |
+| thr 12.5 | 7701 | 1127 / 1127 | byte-identical file |
+| thr 15 | 7701 | 784 / 784 | byte-identical file |
+| thr 17.5 | 7701 | 530 / 530 | byte-identical file |
+| thr 20 | 7701 | 370 / 370 | byte-identical file |
+| thr 22.5 | 7701 | 250 / 250 | byte-identical file |
+| thr 25 | 7701 | 165 / 165 | byte-identical file |
+| thr 27.5 | 7701 | 101 / 101 | byte-identical file |
+| thr 30 | 7701 | 54 / 54 | byte-identical file |
+| thr 35 | 7701 | 19 / 19 | byte-identical file |
+| thr 40 | 7701 | 8 / 8 | byte-identical file |
+
+=== rebuild: splits
+Activated conda/uv virtual environment at /venv/main
+clips=7701 labels(low/mid/high)=[3028, 2041, 2632] clusters@27.5=101 largest=1163
+restart candidates: score p0/p50 = 0.000/0.162, min_share max = 0.265, overlap min = 0.00
+chosen restart 396: score=0.000 min_share=0.261 test overlap with avoided=0.00 (pure size-order restart 0: score=0.222 min_share=0.237)
+  train n=5386 (0.699) labels=[2117, 1427, 1842] frac=[0.393, 0.265, 0.342] clusters=83 top5=[880, 348, 336, 318, 312]
+  val   n= 771 (0.100) labels=[306, 201, 264] frac=[0.397, 0.261, 0.342] clusters=9 top5=[333, 215, 163, 32, 16]
+  test  n=1544 (0.200) labels=[605, 413, 526] frac=[0.392, 0.267, 0.341] clusters=9 top5=[1163, 214, 76, 49, 30]
+  [grouped] test->train nearest RMSE: median=65.6 p5=31.4 p95=67.7 min=27.6 <=10:0.000 <=17.5:0.000 <=27.5:0.000
+  [random] test->train nearest RMSE: median=2.7 p5=0.0 p95=15.3 min=0.0 <=10:0.840 <=17.5:0.960 <=27.5:0.987
+  clips under 64 frames (grouped) train/val/test: [100, 0, 13]
+wrote data/grp27a (videos -> ../ouc-cge-320/videos)
+clips=7701 labels(low/mid/high)=[3028, 2041, 2632] clusters@27.5=101 largest=1163
+avoiding 9 test clusters of outputs/review_grouped/splits/split_grp27a.csv
+restart candidates: score p0/p50 = 0.000/0.161, min_share max = 0.265, overlap min = 0.00
+chosen restart 122: score=0.125 min_share=0.244 test overlap with avoided=0.02 (pure size-order restart 0: score=0.222 min_share=0.237)
+  train n=5187 (0.674) labels=[2119, 1403, 1665] frac=[0.409, 0.27, 0.321] clusters=84 top5=[1163, 336, 318, 224, 215]
+  val   n= 784 (0.102) labels=[303, 216, 265] frac=[0.386, 0.276, 0.338] clusters=7 top5=[333, 214, 163, 51, 18]
+  test  n=1730 (0.225) labels=[606, 422, 702] frac=[0.35, 0.244, 0.406] clusters=10 top5=[880, 348, 312, 108, 34]
+  [grouped] test->train nearest RMSE: median=38.9 p5=33.2 p95=47.4 min=27.6 <=10:0.000 <=17.5:0.000 <=27.5:0.000
+  [random] test->train nearest RMSE: median=2.7 p5=0.0 p95=15.3 min=0.0 <=10:0.840 <=17.5:0.960 <=27.5:0.987
+  clips under 64 frames (grouped) train/val/test: [113, 0, 0]
+wrote data/grp27b (videos -> ../ouc-cge-320/videos)
+clips=7701 labels(low/mid/high)=[3028, 2041, 2632] clusters@17.5=530 largest=410
+restart candidates: score p0/p50 = 0.000/0.002, min_share max = 0.265, overlap min = 0.00
+chosen restart 1: score=0.000 min_share=0.265 test overlap with avoided=0.00 (pure size-order restart 0: score=0.002 min_share=0.264)
+  train n=5391 (0.700) labels=[2119, 1429, 1843] frac=[0.393, 0.265, 0.342] clusters=437 top5=[300, 155, 152, 128, 121]
+  val   n= 770 (0.100) labels=[303, 204, 263] frac=[0.394, 0.265, 0.342] clusters=26 top5=[208, 151, 95, 86, 70]
+  test  n=1540 (0.200) labels=[606, 408, 526] frac=[0.394, 0.265, 0.342] clusters=67 top5=[410, 218, 213, 179, 105]
+  [grouped] test->train nearest RMSE: median=31.3 p5=21.6 p95=41.3 min=17.5 <=10:0.000 <=17.5:0.000 <=27.5:0.301
+  [random] test->train nearest RMSE: median=2.7 p5=0.0 p95=15.3 min=0.0 <=10:0.840 <=17.5:0.960 <=27.5:0.987
+  clips under 64 frames (grouped) train/val/test: [106, 0, 7]
+wrote data/grp17 (videos -> ../ouc-cge-320/videos)
+split_grp27a.csv: identical to docs/review/data/grouped/splits/split_grp27a.csv
+split_grp27b.csv: identical to docs/review/data/grouped/splits/split_grp27b.csv
+split_grp17.csv: identical to docs/review/data/grouped/splits/split_grp17.csv
+SPLITS_DONE
+REPRODUCE_DONE
+REBUILD_EXIT=0

@@ -1,0 +1,230 @@
+[32mActivated conda/uv virtual environment at [36m/venv/main[0m
+clip distance (min-over-frame-pairs thumbnail RMSE) reference distributions:
+                 pair_type     n  mean  p0.1    p1    p5   p25   p50   p75    p95
+         random_same_class 20000 79.95  6.53 28.51 40.32 66.62 86.31 93.81 103.49
+        random_cross_class 20000 82.02 29.49 34.96 46.23 72.63 86.93 94.50 104.72
+adjacent_same_class(N,N+1)  7696 43.48  0.37  0.45  0.62  4.38 21.40 88.52 100.93
+      val_to_nearest_train   770  5.26  0.36  0.41  0.53  1.31  2.88  6.99  17.77
+     test_to_nearest_train   771  5.07  0.37  0.44  0.55  1.33  2.71  6.99  15.34
+
+threshold sweep (p1 of random cross-class distance = 34.96):
+ thr  n_clusters  n_singletons  largest  largest_frac  median_size  weighted_purity  frac_clusters_pure  frac_clips_in_pure_clusters  n_clusters_multi_split  frac_test_with_train_in_cluster  frac_val_with_train_in_cluster  below_p1_random_cross
+10.0        1626           836      246        0.0319          1.0           1.0000              1.0000                       1.0000                     473                           0.8781                          0.8688                   True
+12.5        1127           490      256        0.0332          2.0           1.0000              1.0000                       1.0000                     407                           0.9300                          0.9117                   True
+15.0         784           287      407        0.0529          2.0           1.0000              1.0000                       1.0000                     337                           0.9624                          0.9455                   True
+17.5         530           165      410        0.0532          4.0           1.0000              1.0000                       1.0000                     273                           0.9792                          0.9714                   True
+20.0         370           104      490        0.0636          5.0           0.9604              0.9946                       0.9274                     209                           0.9857                          0.9831                   True
+22.5         250            59      491        0.0638          8.0           0.9218              0.9760                       0.8198                     155                           0.9896                          0.9922                   True
+25.0         165            39     1163        0.1510         11.0           0.8688              0.9697                       0.7385                     108                           0.9948                          0.9961                   True
+27.5         101            20     1163        0.1510         17.0           0.7905              0.8911                       0.4510                      69                           0.9961                          0.9974                   True
+30.0          54            11     1990        0.2584         23.5           0.6547              0.7778                       0.1705                      38                           0.9974                          0.9987                   True
+35.0          19             1     2914        0.3784        108.0           0.5182              0.4737                       0.0540                      18                           1.0000                          1.0000                  False
+40.0           8             0     3423        0.4445        492.5           0.4506              0.1250                       0.0064                       8                           1.0000                          1.0000                  False
+
+chosen thr=27.5
+{
+  "thr": 27.5,
+  "n_clusters": 101,
+  "n_singletons": 20,
+  "largest": 1163,
+  "largest_frac": 0.15101934813660564,
+  "median_size": 17.0,
+  "weighted_purity": 0.7905466822490586,
+  "frac_clusters_pure": 0.8910891089108911,
+  "frac_clips_in_pure_clusters": 0.45098039215686275,
+  "n_clusters_multi_split": 69,
+  "frac_test_with_train_in_cluster": 0.9961089494163424,
+  "frac_val_with_train_in_cluster": 0.9974025974025974,
+  "p1_random_cross": 34.962337493896484,
+  "size_pcts": {
+    "p10": 1.0,
+    "p25": 2.0,
+    "p50": 17.0,
+    "p75": 86.0,
+    "p90": 213.0,
+    "p99": 880.0
+  },
+  "top15_sizes": [
+    1163,
+    880,
+    348,
+    336,
+    333,
+    318,
+    312,
+    224,
+    215,
+    214,
+    213,
+    204,
+    169,
+    167,
+    163
+  ],
+  "top15_purity": [
+    0.476,
+    0.798,
+    0.793,
+    0.494,
+    0.742,
+    0.459,
+    1.0,
+    0.741,
+    0.521,
+    0.607,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "n_clusters_ge5": 64,
+  "frac_clips_in_clusters_ge5": 0.9910401246591352,
+  "frac_test_with_train_within_thr": 0.9870298313878081,
+  "frac_test_with_train_within_2thr": 1.0,
+  "nonsingleton_weighted_purity": 0.7900013019138133,
+  "frac_nonsingleton_clusters_pure": 0.8641975308641975,
+  "frac_clips_in_nonsingleton": 0.9974029346838073,
+  "frac_clips_in_pure_nonsingleton": 0.44838332684067006,
+  "frac_chains_in_single_cluster": 0.9977027337468413
+}
+
+largest 20 clusters:
+ cluster  size  n_low  n_mid  n_high   purity  majority_label  n_train  n_val  n_test  n_splits  n_chains
+       6  1163    554    253     356 0.476354               0      913    120     130         3       111
+       0   880      0    178     702 0.797727               2      718     74      88         3       562
+      28   348    276     72       0 0.793103               0      286     22      40         3       128
+       1   336    166    113      57 0.494048               0      269     33      34         3       211
+      26   333    247     86       0 0.741742               0      267     33      33         3       121
+      11   318    146    128      44 0.459119               0      242     38      38         3       245
+      36   312    312      0       0 1.000000               0      246     40      26         3        87
+      10   224      0    166      58 0.741071               1      182     19      23         3       195
+      35   215     50    112      53 0.520930               1      171     24      20         3       180
+       5   214      0    130      84 0.607477               1      178     18      18         3       194
+       8   213      0    213       0 1.000000               1      169     23      21         3       147
+      25   204      0      0     204 1.000000               2      164     23      17         3       197
+      20   169      0    169       0 1.000000               1      151      9       9         3       130
+       7   167    167      0       0 1.000000               0      125     22      20         3        26
+      44   163      0      0     163 1.000000               2      133     16      14         3        45
+       2   155      0      0     155 1.000000               2      125     12      18         3       131
+      16   141      0      0     141 1.000000               2      112     14      15         3       102
+      17   136    136      0       0 1.000000               0      110     14      12         3        83
+       9   127    127      0       0 1.000000               0       97     15      15         3       123
+      21   112      0      0     112 1.000000               2       85     14      13         3        51
+contact sheets written
+n=7701 class_counts=[3028, 2041, 2632] clusters=101 chains=4353
+
+stratified_random_5fold: acc=0.9151±0.0040 f1=0.9122±0.0035 pooled_acc=0.9151
+  pooled confusion (rows=true low/mid/high): [[2825, 115, 88], [115, 1819, 107], [103, 126, 2403]]
+  fold0: n_test=1541 acc=0.9182 f1=0.9153 maj=0.3926 test_counts=[605, 409, 527]
+  fold1: n_test=1540 acc=0.9143 f1=0.9112 maj=0.3929 test_counts=[605, 408, 527]
+  fold2: n_test=1540 acc=0.9097 f1=0.9072 maj=0.3935 test_counts=[606, 408, 526]
+  fold3: n_test=1540 acc=0.9208 f1=0.9168 maj=0.3935 test_counts=[606, 408, 526]
+  fold4: n_test=1540 acc=0.9123 f1=0.9105 maj=0.3935 test_counts=[606, 408, 526]
+
+group_5fold_by_chain: acc=0.8726±0.0218 f1=0.8683±0.0205 pooled_acc=0.8726
+  pooled confusion (rows=true low/mid/high): [[2717, 175, 136], [229, 1646, 166], [160, 115, 2357]]
+  fold0: n_test=1541 acc=0.8306 f1=0.8277 maj=0.3141 test_counts=[484, 529, 528]
+  fold1: n_test=1540 acc=0.8740 f1=0.8735 maj=0.3558 test_counts=[548, 394, 598]
+  fold2: n_test=1540 acc=0.8825 f1=0.8790 maj=0.4409 test_counts=[679, 393, 468]
+  fold3: n_test=1540 acc=0.8838 f1=0.8781 maj=0.3935 test_counts=[606, 355, 579]
+  fold4: n_test=1540 acc=0.8922 f1=0.8831 maj=0.4617 test_counts=[711, 370, 459]
+
+group_5fold_by_cluster: acc=0.4715±0.0750 f1=0.4233±0.0778 pooled_acc=0.4715
+  pooled confusion (rows=true low/mid/high): [[1520, 726, 782], [820, 489, 732], [544, 466, 1622]]
+  fold0: n_test=1541 acc=0.3569 f1=0.3534 maj=0.4860 test_counts=[749, 362, 430]
+  fold1: n_test=1540 acc=0.4890 f1=0.3724 maj=0.2981 test_counts=[459, 179, 902]
+  fold2: n_test=1540 acc=0.5253 f1=0.4859 maj=0.3266 test_counts=[503, 384, 653]
+  fold3: n_test=1540 acc=0.5669 f1=0.5451 maj=0.3714 test_counts=[572, 461, 507]
+  fold4: n_test=1540 acc=0.4195 f1=0.3598 maj=0.0909 test_counts=[745, 655, 140]
+
+group_5fold_by_cluster_thr10: acc=0.7809±0.0385 f1=0.7689±0.0403 pooled_acc=0.7809
+  pooled confusion (rows=true low/mid/high): [[2504, 319, 205], [392, 1345, 304], [247, 220, 2165]]
+  fold0: n_test=1541 acc=0.7164 f1=0.6956 maj=0.4796 test_counts=[739, 403, 399]
+  fold1: n_test=1540 acc=0.7929 f1=0.7904 maj=0.3422 test_counts=[527, 459, 554]
+  fold2: n_test=1540 acc=0.8084 f1=0.7977 maj=0.3552 test_counts=[547, 387, 606]
+  fold3: n_test=1540 acc=0.8253 f1=0.8049 maj=0.4455 test_counts=[686, 309, 545]
+  fold4: n_test=1540 acc=0.7617 f1=0.7557 maj=0.3435 test_counts=[529, 483, 528]
+
+group_5fold_by_cluster_thr12.5: acc=0.7326±0.0445 f1=0.7156±0.0404 pooled_acc=0.7326
+  pooled confusion (rows=true low/mid/high): [[2383, 380, 265], [451, 1232, 358], [297, 308, 2027]]
+  fold0: n_test=1541 acc=0.6918 f1=0.6687 maj=0.1739 test_counts=[788, 485, 268]
+  fold1: n_test=1540 acc=0.7468 f1=0.7177 maj=0.3357 test_counts=[517, 300, 723]
+  fold2: n_test=1540 acc=0.6753 f1=0.6747 maj=0.2929 test_counts=[451, 572, 517]
+  fold3: n_test=1540 acc=0.7500 f1=0.7410 maj=0.4032 test_counts=[621, 407, 512]
+  fold4: n_test=1540 acc=0.7994 f1=0.7759 maj=0.4227 test_counts=[651, 277, 612]
+
+group_5fold_by_cluster_thr15: acc=0.6961±0.0133 f1=0.6788±0.0182 pooled_acc=0.6961
+  pooled confusion (rows=true low/mid/high): [[2276, 420, 332], [521, 1140, 380], [343, 344, 1945]]
+  fold0: n_test=1541 acc=0.6833 f1=0.6466 maj=0.3530 test_counts=[544, 298, 699]
+  fold1: n_test=1540 acc=0.6955 f1=0.6764 maj=0.2617 test_counts=[819, 318, 403]
+  fold2: n_test=1540 acc=0.7156 f1=0.7011 maj=0.4045 test_counts=[623, 411, 506]
+  fold3: n_test=1540 acc=0.7058 f1=0.6894 maj=0.2961 test_counts=[456, 418, 666]
+  fold4: n_test=1540 acc=0.6805 f1=0.6805 maj=0.3805 test_counts=[586, 596, 358]
+
+group_5fold_by_cluster_thr17.5: acc=0.6211±0.0476 f1=0.5922±0.0427 pooled_acc=0.6211
+  pooled confusion (rows=true low/mid/high): [[2138, 474, 416], [699, 823, 519], [425, 385, 1822]]
+  fold0: n_test=1541 acc=0.6087 f1=0.5463 maj=0.3705 test_counts=[571, 257, 713]
+  fold1: n_test=1540 acc=0.5506 f1=0.5388 maj=0.2065 test_counts=[725, 497, 318]
+  fold2: n_test=1540 acc=0.7000 f1=0.6490 maj=0.5370 test_counts=[827, 225, 488]
+  fold3: n_test=1540 acc=0.6234 f1=0.6160 maj=0.2662 test_counts=[410, 627, 503]
+  fold4: n_test=1540 acc=0.6227 f1=0.6111 maj=0.3214 test_counts=[495, 435, 610]
+
+group_5fold_by_cluster_thr20: acc=0.5915±0.0277 f1=0.5609±0.0408 pooled_acc=0.5915
+  pooled confusion (rows=true low/mid/high): [[1876, 593, 559], [619, 813, 609], [401, 365, 1866]]
+  fold0: n_test=1541 acc=0.6210 f1=0.6177 maj=0.3400 test_counts=[524, 540, 477]
+  fold1: n_test=1540 acc=0.6149 f1=0.5683 maj=0.1390 test_counts=[214, 462, 864]
+  fold2: n_test=1540 acc=0.5558 f1=0.5011 maj=0.3078 test_counts=[891, 175, 474]
+  fold3: n_test=1540 acc=0.5604 f1=0.5318 maj=0.4688 test_counts=[722, 479, 339]
+  fold4: n_test=1540 acc=0.6052 f1=0.5856 maj=0.4396 test_counts=[677, 385, 478]
+
+group_5fold_by_cluster_thr22.5: acc=0.5327±0.0743 f1=0.5064±0.0597 pooled_acc=0.5327
+  pooled confusion (rows=true low/mid/high): [[1760, 802, 466], [850, 633, 558], [571, 352, 1709]]
+  fold0: n_test=1541 acc=0.5367 f1=0.4967 maj=0.4478 test_counts=[690, 347, 504]
+  fold1: n_test=1540 acc=0.6740 f1=0.6226 maj=0.4422 test_counts=[681, 245, 614]
+  fold2: n_test=1540 acc=0.5039 f1=0.4561 maj=0.1481 test_counts=[228, 394, 918]
+  fold3: n_test=1540 acc=0.4747 f1=0.4704 maj=0.4370 test_counts=[673, 542, 325]
+  fold4: n_test=1540 acc=0.4740 f1=0.4861 maj=0.1760 test_counts=[756, 513, 271]
+
+group_5fold_by_cluster_thr25: acc=0.5001±0.0631 f1=0.4768±0.0676 pooled_acc=0.5001
+  pooled confusion (rows=true low/mid/high): [[1501, 720, 807], [642, 641, 758], [451, 472, 1709]]
+  fold0: n_test=1541 acc=0.4134 f1=0.3784 maj=0.3978 test_counts=[613, 428, 500]
+  fold1: n_test=1540 acc=0.4825 f1=0.4475 maj=0.2558 test_counts=[394, 346, 800]
+  fold2: n_test=1540 acc=0.5208 f1=0.5067 maj=0.1825 test_counts=[831, 428, 281]
+  fold3: n_test=1540 acc=0.6058 f1=0.5834 maj=0.3123 test_counts=[481, 480, 579]
+  fold4: n_test=1540 acc=0.4779 f1=0.4680 maj=0.4604 test_counts=[709, 359, 472]
+
+group_5fold_by_cluster_thr27.5: acc=0.4715±0.0750 f1=0.4233±0.0778 pooled_acc=0.4715
+  pooled confusion (rows=true low/mid/high): [[1520, 726, 782], [820, 489, 732], [544, 466, 1622]]
+  fold0: n_test=1541 acc=0.3569 f1=0.3534 maj=0.4860 test_counts=[749, 362, 430]
+  fold1: n_test=1540 acc=0.4890 f1=0.3724 maj=0.2981 test_counts=[459, 179, 902]
+  fold2: n_test=1540 acc=0.5253 f1=0.4859 maj=0.3266 test_counts=[503, 384, 653]
+  fold3: n_test=1540 acc=0.5669 f1=0.5451 maj=0.3714 test_counts=[572, 461, 507]
+  fold4: n_test=1540 acc=0.4195 f1=0.3598 maj=0.0909 test_counts=[745, 655, 140]
+
+group_5fold_by_cluster_thr30: acc=0.4358±0.0668 f1=0.3820±0.0537 pooled_acc=0.4394
+  pooled confusion (rows=true low/mid/high): [[1759, 715, 554], [1007, 344, 690], [906, 445, 1281]]
+  fold0: n_test=1990 acc=0.4854 f1=0.3892 maj=0.2779 test_counts=[553, 178, 1259]
+  fold1: n_test=1428 acc=0.3417 f1=0.3183 maj=0.1190 test_counts=[170, 679, 579]
+  fold2: n_test=1428 acc=0.3936 f1=0.3709 maj=0.5098 test_counts=[728, 336, 364]
+  fold3: n_test=1428 acc=0.5315 f1=0.4786 maj=0.4468 test_counts=[638, 495, 295]
+  fold4: n_test=1427 acc=0.4268 f1=0.3528 maj=0.0946 test_counts=[939, 353, 135]
+
+group_5fold_by_cluster_thr35: acc=0.3969±0.0758 f1=0.3581±0.0392 pooled_acc=0.4024
+  pooled confusion (rows=true low/mid/high): [[1724, 838, 466], [985, 473, 583], [971, 759, 902]]
+  fold0: n_test=2914 acc=0.4485 f1=0.4133 maj=0.4108 test_counts=[1197, 312, 1405]
+  fold1: n_test=1599 acc=0.3252 f1=0.3229 maj=0.1470 test_counts=[235, 712, 652]
+  fold2: n_test=1163 acc=0.3052 f1=0.3058 maj=0.4764 test_counts=[554, 253, 356]
+  fold3: n_test=1013 acc=0.3968 f1=0.3660 maj=0.4738 test_counts=[480, 415, 118]
+  fold4: n_test=1012 acc=0.5089 f1=0.3826 maj=0.0998 test_counts=[562, 349, 101]
+
+group_5fold_by_cluster_thr40: acc=0.4372±0.0708 f1=0.4035±0.0671 pooled_acc=0.4431
+  pooled confusion (rows=true low/mid/high): [[1553, 952, 523], [615, 719, 707], [625, 867, 1140]]
+  fold0: n_test=3423 acc=0.4660 f1=0.4473 maj=0.4157 test_counts=[1423, 558, 1442]
+  fold1: n_test=1669 acc=0.4667 f1=0.4466 maj=0.1815 test_counts=[303, 713, 653]
+  fold2: n_test=1163 acc=0.3052 f1=0.3058 maj=0.4764 test_counts=[554, 253, 356]
+  fold3: n_test=692 acc=0.5145 f1=0.4766 maj=0.4465 test_counts=[309, 273, 110]
+  fold4: n_test=754 acc=0.4337 f1=0.3412 maj=0.5822 test_counts=[439, 244, 71]
+
+majority-class baseline (class 0): 0.3932
+ALL_DONE

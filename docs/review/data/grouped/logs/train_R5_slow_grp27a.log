@@ -1,0 +1,113 @@
+Seed set to 42
+[2026-10-26 15:13:06,622][__main__][INFO] - Config:
+experiment:
+  name: baseline_ouc_cge
+  seed: 42
+mlflow:
+  tracking_uri: null
+  experiment_name: review_grouped
+paths:
+  output_dir: outputs/review/R5_slow_grp27a
+  checkpoints: ${paths.output_dir}/checkpoints
+  logs: ${paths.output_dir}/logs
+data:
+  name: ouc_cge
+  root: data/grp27a
+  num_classes: 3
+  clip_duration_sec: 10.0
+  fps: 30
+  batch_size: 32
+  num_workers: 16
+  pin_memory: true
+model:
+  name: slow_r50
+  num_classes: 3
+  pretrained: true
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  sample_rate: 8
+  num_frames: 8
+trainer:
+  max_epochs: 15
+  min_epochs: 5
+  accelerator: auto
+  devices: auto
+  strategy: auto
+  precision: bf16-mixed
+  accumulate_grad_batches: 1
+  checkpoint:
+    monitor: val/accuracy
+    mode: max
+    save_top_k: 2
+    save_last: true
+  early_stopping:
+    monitor: val/accuracy
+    patience: 5
+    mode: max
+    min_epochs: 5
+  log_every_n_steps: 10
+  val_check_interval: 1.0
+  check_val_every_n_epoch: 1
+  gradient_clip_val: 1.0
+  gradient_clip_algorithm: norm
+  deterministic: false
+checkpoint_path: null
+
+[2026-10-26 15:14:23,633][src.data.ouc_cge][WARNING] - split=train: filtered out 100/5386 clips (short/missing/corrupt)
+[2026-10-26 15:14:23,644][src.data.ouc_cge][INFO] - OUC-CGE split=train clips=5286 fps=[3.75] num_frames=[8] rates=[8] window=64
+[2026-10-26 15:14:34,523][src.data.ouc_cge][INFO] - OUC-CGE split=val clips=771 fps=[3.75] num_frames=[8] rates=[8] window=64
+[2026-10-26 15:14:56,633][src.data.ouc_cge][WARNING] - split=test: filtered out 13/1544 clips (short/missing/corrupt)
+[2026-10-26 15:14:56,638][src.data.ouc_cge][INFO] - OUC-CGE split=test clips=1531 fps=[3.75] num_frames=[8] rates=[8] window=64
+Using cache found in /root/.cache/torch/hub/facebookresearch_pytorchvideo_main
+Downloading: "https://dl.fbaipublicfiles.com/pytorchvideo/model_zoo/kinetics/SLOW_8x8_R50.pyth" to /root/.cache/torch/hub/checkpoints/SLOW_8x8_R50.pyth
+  0%|          | 0.00/248M [00:00<?, ?B/s]  0%|          | 128k/248M [00:00<13:05, 331kB/s]  0%|          | 256k/248M [00:00<07:58, 543kB/s]  0%|          | 640k/248M [00:00<03:19, 1.30MB/s]  0%|          | 1.12M/248M [00:00<02:01, 2.12MB/s]  1%|          | 2.25M/248M [00:00<01:01, 4.19MB/s]  2%|▏         | 4.50M/248M [00:01<00:30, 8.30MB/s]  3%|▎         | 8.38M/248M [00:01<00:16, 14.9MB/s]  5%|▍         | 12.2M/248M [00:01<00:12, 19.4MB/s]  7%|▋         | 16.1M/248M [00:01<00:10, 22.5MB/s]  8%|▊         | 19.0M/248M [00:01<00:10, 22.4MB/s]  9%|▉         | 22.9M/248M [00:01<00:09, 24.7MB/s] 11%|█         | 26.8M/248M [00:01<00:08, 26.3MB/s] 12%|█▏        | 30.0M/248M [00:01<00:08, 27.1MB/s] 14%|█▎        | 34.0M/248M [00:02<00:08, 27.1MB/s] 15%|█▌        | 37.9M/248M [00:02<00:07, 27.6MB/s] 17%|█▋        | 41.8M/248M [00:02<00:07, 28.3MB/s] 18%|█▊        | 44.8M/248M [00:02<00:07, 27.8MB/s] 20%|█▉        | 48.6M/248M [00:02<00:07, 27.5MB/s] 21%|██        | 52.5M/248M [00:02<00:07, 28.1MB/s] 23%|██▎       | 56.5M/248M [00:02<00:06, 28.9MB/s] 24%|██▍       | 60.0M/248M [00:03<00:06, 29.0MB/s] 26%|██▌       | 63.9M/248M [00:03<00:06, 28.7MB/s] 27%|██▋       | 67.9M/248M [00:03<00:06, 29.3MB/s] 29%|██▉       | 71.9M/248M [00:03<00:06, 29.7MB/s] 30%|███       | 75.1M/248M [00:03<00:06, 30.1MB/s] 32%|███▏      | 78.8M/248M [00:03<00:05, 30.1MB/s] 33%|███▎      | 81.6M/248M [00:03<00:06, 28.6MB/s] 34%|███▍      | 85.4M/248M [00:04<00:06, 27.0MB/s] 36%|███▌      | 89.2M/248M [00:04<00:05, 27.8MB/s] 38%|███▊      | 93.1M/248M [00:04<00:05, 27.1MB/s] 39%|███▉      | 97.0M/248M [00:04<00:05, 27.9MB/s] 41%|████      | 101M/248M [00:04<00:05, 28.7MB/s]  42%|████▏     | 105M/248M [00:04<00:05, 29.0MB/s] 43%|████▎     | 108M/248M [00:04<00:05, 29.2MB/s] 45%|████▌     | 112M/248M [00:05<00:05, 26.9MB/s] 47%|████▋     | 116M/248M [00:05<00:05, 27.8MB/s] 48%|████▊     | 120M/248M [00:05<00:04, 28.6MB/s] 50%|████▉     | 123M/248M [00:05<00:04, 28.6MB/s] 51%|█████▏    | 127M/248M [00:05<00:04, 29.0MB/s] 53%|█████▎    | 131M/248M [00:05<00:04, 29.4MB/s] 54%|█████▍    | 135M/248M [00:05<00:03, 30.6MB/s] 56%|█████▌    | 138M/248M [00:06<00:05, 22.5MB/s] 59%|█████▊    | 145M/248M [00:06<00:03, 30.9MB/s] 60%|██████    | 149M/248M [00:06<00:03, 28.4MB/s] 62%|██████▏   | 153M/248M [00:06<00:03, 27.6MB/s] 63%|██████▎   | 157M/248M [00:06<00:03, 28.4MB/s] 65%|██████▍   | 161M/248M [00:06<00:03, 28.8MB/s] 66%|██████▋   | 165M/248M [00:06<00:03, 29.1MB/s] 68%|██████▊   | 168M/248M [00:07<00:02, 28.0MB/s] 70%|██████▉   | 172M/248M [00:07<00:02, 28.4MB/s] 71%|███████   | 176M/248M [00:07<00:02, 28.8MB/s] 73%|███████▎  | 180M/248M [00:07<00:02, 29.5MB/s] 74%|███████▍  | 184M/248M [00:07<00:02, 28.9MB/s] 76%|███████▌  | 188M/248M [00:07<00:02, 29.2MB/s] 77%|███████▋  | 192M/248M [00:07<00:02, 29.4MB/s] 79%|███████▊  | 195M/248M [00:08<00:01, 28.6MB/s] 80%|████████  | 199M/248M [00:08<00:01, 28.3MB/s] 82%|████████▏ | 203M/248M [00:08<00:01, 29.2MB/s] 83%|████████▎ | 206M/248M [00:08<00:01, 30.0MB/s] 85%|████████▍ | 210M/248M [00:08<00:01, 29.2MB/s] 86%|████████▌ | 213M/248M [00:08<00:01, 29.2MB/s] 87%|████████▋ | 216M/248M [00:08<00:01, 25.7MB/s] 89%|████████▉ | 220M/248M [00:09<00:01, 26.9MB/s] 90%|█████████ | 224M/248M [00:09<00:00, 27.7MB/s] 92%|█████████▏| 228M/248M [00:09<00:00, 28.6MB/s] 94%|█████████▎| 232M/248M [00:09<00:00, 29.0MB/s] 95%|█████████▌| 236M/248M [00:09<00:00, 29.2MB/s] 97%|█████████▋| 240M/248M [00:09<00:00, 28.7MB/s] 98%|█████████▊| 244M/248M [00:09<00:00, 27.2MB/s]100%|█████████▉| 248M/248M [00:10<00:00, 27.9MB/s]100%|██████████| 248M/248M [00:10<00:00, 25.9MB/s]
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+`Trainer(val_check_interval=1.0)` was configured so validation will run at the end of the training epoch..
+[2026-10-26 15:15:10,270][__main__][INFO] - Starting training...
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/model_summary/model_summary.py:242: Precision bf16-mixed is not supported by the model summary.  Estimated model size in MB will not be accurate. Using 32 bits instead.
+┏━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name      ┃ Type               ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ model     │ Net                │ 31.6 M │ train │     0 │
+│ 1 │ train_acc │ MulticlassAccuracy │      0 │ train │     0 │
+│ 2 │ val_acc   │ MulticlassAccuracy │      0 │ train │     0 │
+│ 3 │ val_f1    │ MulticlassF1Score  │      0 │ train │     0 │
+│ 4 │ test_acc  │ MulticlassAccuracy │      0 │ train │     0 │
+│ 5 │ test_f1   │ MulticlassF1Score  │      0 │ train │     0 │
+└───┴───────────┴────────────────────┴────────┴───────┴───────┘
+Trainable params: 31.6 M                                                        
+Non-trainable params: 0                                                         
+Total params: 31.6 M                                                            
+Total estimated model params size (MB): 126.563                                 
+Modules in train mode: 209                                                      
+Modules in eval mode: 0                                                         
+Total FLOPs: 0                                                                  
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 32. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 3. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+Epoch 11/14 ━━━━━━━━━━━━━━━━ 165/165 0:01:09 •        2.82it/s v_num: cd43      
+                                     0:00:00                   train/loss_step: 
+                                                               0.021 val/loss:  
+                                                               3.159            
+                                                               val/accuracy:    
+                                                               0.366            
+                                                               train/loss_epoch:
+                                                               0.014            
+[2026-10-26 15:31:19,513][__main__][INFO] - Running test evaluation...
+Restoring states from the checkpoint path at /workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5422.ckpt
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loaded model weights from the checkpoint at /workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5422.ckpt
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 27. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃        Test metric        ┃       DataLoader 0        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│       test/accuracy       │    0.5088177919387817     │
+│       test/f1_macro       │    0.45166030526161194    │
+│         test/loss         │    1.7136977910995483     │
+└───────────────────────────┴───────────────────────────┘
+Testing ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48/48 0:00:11 • 0:00:00 4.11it/s 

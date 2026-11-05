@@ -1,0 +1,37 @@
+{
+  "tag": "R5_slow_grp27a_ep06_test",
+  "model": "slow",
+  "ckpt": "outputs/review_epochs/R5_slow_grp27a/checkpoints/epoch=06-val_acc=0.5292.ckpt",
+  "split": "test",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 1544,
+  "evaluated": 1531,
+  "dropped_by_window_filter": 13,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.4154147505760193,
+  "lightning_test_f1_macro": 0.3302871584892273,
+  "lightning_test_loss": 3.3271684646606445,
+  "sklearn_accuracy": 0.4154147615937296,
+  "sklearn_f1_macro": 0.3302871464375224,
+  "confusion_rows_true_low_mid_high": [
+    [
+      61,
+      9,
+      522
+    ],
+    [
+      38,
+      68,
+      307
+    ],
+    [
+      9,
+      10,
+      507
+    ]
+  ],
+  "n_errors": 895,
+  "mean_max_prob": 0.9450356960296631,
+  "seconds": 39.3
+}
