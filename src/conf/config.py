@@ -4,7 +4,7 @@ from typing import Any, Optional
 from hydra.core.config_store import ConfigStore
 from omegaconf import MISSING
 
-from src.conf.data import OUCCGEDataConfig, DIPSERDataConfig
+from src.conf.data import OUCCGEDataConfig
 from src.conf.model import SlowConfig, SlowFastConfig, ResNet50Config
 from src.conf.trainer import TrainerConfig
 
@@ -59,7 +59,6 @@ def register_configs() -> None:
     cs.store(name="config", node=Config)
 
     cs.store(group="data", name="ouc_cge", node=OUCCGEDataConfig)
-    cs.store(group="data", name="dipser", node=DIPSERDataConfig)
 
     cs.store(group="model", name="slow", node=SlowConfig)
     cs.store(group="model", name="slowfast", node=SlowFastConfig)

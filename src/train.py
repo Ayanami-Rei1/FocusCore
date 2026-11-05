@@ -2,9 +2,9 @@
 
 Examples:
     python -m src.train                                # defaults (SLOW on OUC-CGE)
-    python -m src.train model=slowfast                 # SlowFast
-    python -m src.train data=dipser model=i3d trainer.max_epochs=30
-    python -m src.train --multirun model=slow,slowfast,i3d,x3d
+    python -m src.train model=resnet50                 # single-frame baseline
+    python -m src.train +experiment=baseline_ouc_cge data.root=data/grp27a
+    python -m src.train --multirun model=slow,slowfast
 """
 
 import logging
@@ -12,7 +12,6 @@ from pathlib import Path
 
 import hydra
 import lightning as L
-import torch
 from hydra.core.hydra_config import HydraConfig
 from lightning.pytorch.callbacks import (
     LearningRateMonitor,
@@ -98,7 +97,10 @@ def train(cfg: Config) -> float:
         weight_decay=cfg.model.weight_decay,
     )
 
-    model_choice = HydraConfig.get().runtime.choices.get("model", cfg.model.name)
+    try:
+        model_choice = HydraConfig.get().runtime.choices.get("model", cfg.model.name)
+    except ValueError:  # train() called without Hydra (tests, notebooks)
+        model_choice = cfg.model.name
     mlflow_logger = MLFlowLogger(
         experiment_name=cfg.mlflow.experiment_name,
         tracking_uri=cfg.mlflow.tracking_uri,
@@ -117,7 +119,10 @@ def train(cfg: Config) -> float:
     callbacks = [
         ModelCheckpoint(
             dirpath=cfg.paths.checkpoints,
-            filename="{epoch:02d}-{val/accuracy:.4f}",
+            # The monitored metric name contains "/", which Lightning would
+            # otherwise turn into a sub-directory ("epoch=31-val/accuracy=1.0000.ckpt").
+            filename="epoch={epoch:02d}-val_acc={val/accuracy:.4f}",
+            auto_insert_metric_name=False,
             monitor=cfg.trainer.checkpoint.monitor,
             mode=cfg.trainer.checkpoint.mode,
             save_top_k=cfg.trainer.checkpoint.save_top_k,
@@ -163,7 +168,10 @@ def train(cfg: Config) -> float:
     log.info("Running test evaluation...")
     trainer.test(module, datamodule=datamodule, ckpt_path="best")
 
-    return float(trainer.callback_metrics.get("val/accuracy", torch.tensor(0.0)))
+    # Best monitored value (the docstring promise); callback_metrics would hold
+    # the *last* epoch's value, not the best one.
+    best = trainer.checkpoint_callback.best_model_score
+    return float(best) if best is not None else 0.0
 
 
 @hydra.main(version_base=None, config_path="../configs", config_name="config")

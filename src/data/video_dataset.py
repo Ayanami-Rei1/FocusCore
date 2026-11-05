@@ -1,6 +1,6 @@
 """Base video dataset interface.
 
-All dataset implementations (OUC-CGE, DIPSER) should subclass VideoDataset
+Dataset implementations such as OUC-CGE subclass VideoDataset
 and implement the abstract methods.
 """
 

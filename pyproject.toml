@@ -3,7 +3,7 @@ name = "focus-core"
 version = "0.1.0"
 description = "Classroom Group Engagement Recognition from Video"
 authors = [
-    {name = "Denis Bakin", email = "denis.bakin5@gmail.com"}
+    {name = "Aleksandra Zelenskaya"}
 ]
 readme = "README.md"
 requires-python = ">=3.10,<3.13"

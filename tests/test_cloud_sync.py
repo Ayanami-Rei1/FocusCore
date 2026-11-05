@@ -201,3 +201,29 @@ def test_new_sessions_belong_to_signed_in_user(db_path: Path) -> None:
     with get_connection(db_path) as conn:
         owners = {row[0] for row in conn.execute("SELECT user_id FROM sessions")}
     assert owners == {"user-1"} and LOCAL_USER_ID not in owners
+
+
+class RevokedCloud(FakeCloud):
+    """The server no longer accepts the saved refresh token, e.g. after the
+    password was changed on another device and the sessions were revoked."""
+
+    def restore(self, refresh_token) -> AuthSession:
+        raise InvalidCredentialsError("refresh_token_not_found")
+
+
+def test_revoked_sign_in_found_during_synchronization_forgets_the_account(db_path: Path) -> None:
+    """A saved sign-in the server rejects is forgotten by synchronize, as by restore.
+
+    Otherwise every later synchronization would fail with the same error
+    while the dead account stayed stored on the device.
+    """
+    cloud = RevokedCloud()
+    service = AccountService(cloud, db_path)
+    service.sign_in("a@b.ru", "secret1")
+    assert load_account(db_path) is not None
+    cloud.session = None
+
+    with pytest.raises(InvalidCredentialsError):
+        service.synchronize()
+
+    assert load_account(db_path) is None

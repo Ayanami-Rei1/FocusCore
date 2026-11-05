@@ -1,3 +1,9 @@
+"""Extract every frame of the OUC-CGE clips into PNG files, one folder per clip.
+
+Clips are read from DIR_WITH_VIDEOS in parallel processes; a clip whose
+output folder already has files is skipped.
+"""
+
 import cv2
 import os
 import time

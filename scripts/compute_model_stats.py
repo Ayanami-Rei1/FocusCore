@@ -1,7 +1,7 @@
-"""Compute per-channel mean and std for a video dataset.
+"""Print the layer summary, parameter count and MACs of a registered model.
 
 Usage:
-    python scripts/compute_dataset_stats.py --root data/ouc_cge --num_samples 500
+    python scripts/compute_model_stats.py --model slow_r50 --batch_size 8 --frames_count 8
 """
 
 import argparse
@@ -10,7 +10,7 @@ import src.models.backbones.pytorchvideo
 from src.models.factory import create_model
 
 def main():
-    parser = argparse.ArgumentParser(description="Compute video dataset statistics")
+    parser = argparse.ArgumentParser(description="Model summary with torchinfo")
     parser.add_argument("--model", type=str, default="slow_r50")
     parser.add_argument("--batch_size", type=int, default=8)
     parser.add_argument("--frames_count", type=int, default=8)

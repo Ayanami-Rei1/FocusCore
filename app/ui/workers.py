@@ -11,7 +11,7 @@ import numpy as np
 from PyQt6.QtCore import QThread, pyqtBoundSignal, pyqtSignal
 
 from app.core.engagement import NUM_FRAMES, EngagementModel
-from app.core.offline import iter_clips, usable_fps
+from app.core.offline import frame_stride, iter_clips, usable_fps
 from app.core.video_source import FILE, VideoSource
 
 MAX_FAILED_READS = 20
@@ -19,7 +19,7 @@ RETRY_DELAY_MS = 100
 STOP_TIMEOUT_MS = 1000
 PREVIEW_MAX_WIDTH = 960
 ANALYSIS_FRAME_HEIGHT = 320
-FRAME_STRIDE = 8
+CAMERA_DEFAULT_FPS = 30.0
 ANALYSIS_STOP_TIMEOUT_MS = 3000
 PAUSE_SLEEP_MS = 100
 
@@ -89,10 +89,11 @@ def _shrink(frame: np.ndarray) -> np.ndarray:
 class CameraAnalysisWorker(QThread):
     """Reads a camera during a lecture and periodically runs the model.
 
-    Keeps the last NUM_FRAMES * FRAME_STRIDE frames in a buffer. Every
-    `interval_sec` seconds it takes every FRAME_STRIDE-th of them, which is
-    the same sampling as during training, and emits the engagement score.
-    Every frame is also emitted for the live view.
+    Keeps the last NUM_FRAMES * stride frames in a buffer, where the stride
+    is derived from the camera frame rate (frame_stride). Every `interval_sec`
+    seconds it takes every stride-th of them, which is the same sampling as
+    during training, and emits the engagement score. Every frame is also
+    emitted for the live view.
 
     The model runs in a separate helper thread, so frames keep flowing
     while an estimate is being computed and the live view does not freeze.
@@ -171,8 +172,16 @@ class CameraAnalysisWorker(QThread):
         model: EngagementModel,
         executor: ThreadPoolExecutor,
     ) -> None:
-        """Main loop: buffer frames and start an estimate every interval."""
-        frames: deque[np.ndarray] = deque(maxlen=NUM_FRAMES * FRAME_STRIDE)
+        """Main loop: buffer frames and start an estimate every interval.
+
+        While paused the camera is still read, so that its buffer does not
+        fill with stale frames; a lost camera is reported in both states,
+        otherwise a dead capture.read() would spin here at full CPU. Cameras
+        that do not report a frame rate are assumed to run at CAMERA_DEFAULT_FPS.
+        """
+        reported_fps = capture.get(cv2.CAP_PROP_FPS)
+        stride = frame_stride(reported_fps if reported_fps > 0 else CAMERA_DEFAULT_FPS)
+        frames: deque[np.ndarray] = deque(maxlen=NUM_FRAMES * stride)
         next_estimate_at = time.monotonic()
         failed_reads = 0
         pending: Future | None = None
@@ -181,11 +190,6 @@ class CameraAnalysisWorker(QThread):
             if pending is not None and pending.done():
                 self._emit_result(pending)
                 pending = None
-
-            if self._paused:
-                frames.clear()
-                capture.read()
-                continue
 
             ok, frame = capture.read()
             if not ok:
@@ -197,13 +201,17 @@ class CameraAnalysisWorker(QThread):
                 continue
 
             failed_reads = 0
+            if self._paused:
+                frames.clear()
+                continue
+
             small = _resize_to_height(frame, ANALYSIS_FRAME_HEIGHT)
             frames.append(small)
             self.frame_ready.emit(small)
 
             buffer_full = len(frames) == frames.maxlen
             if buffer_full and pending is None and time.monotonic() >= next_estimate_at:
-                clip = list(frames)[::FRAME_STRIDE]
+                clip = list(frames)[::stride]
                 pending = executor.submit(model.engagement_score, clip)
                 next_estimate_at = time.monotonic() + self._interval_sec
 
@@ -303,7 +311,7 @@ class FileAnalysisWorker(QThread):
         fps = usable_fps(capture.get(cv2.CAP_PROP_FPS))
         duration_sec = max(0.0, capture.get(cv2.CAP_PROP_FRAME_COUNT) / fps)
         clips = iter_clips(
-            self._read_frames(capture), fps, self._interval_sec, NUM_FRAMES, FRAME_STRIDE
+            self._read_frames(capture), fps, self._interval_sec, NUM_FRAMES, frame_stride(fps)
         )
         for offset, clip in clips:
             if not self._running:
@@ -360,7 +368,8 @@ def _simulate_failure(rate: float) -> bool:
 def _resize_to_height(frame: np.ndarray, target_height: int) -> np.ndarray:
     """Downscale a frame to the given height keeping its aspect ratio.
 
-    The model was trained on 320p video, so larger frames only cost memory.
+    The model was trained on 320p video and crops a 224x224 square from a
+    short side of 256, so larger frames only cost memory.
     """
     height, width = frame.shape[:2]
     if height <= target_height:

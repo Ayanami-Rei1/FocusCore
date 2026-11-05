@@ -32,9 +32,10 @@ CREATE INDEX IF NOT EXISTS idx_points_session ON engagement_points(session_id);
 CREATE TABLE IF NOT EXISTS critical_moments (
     id          TEXT PRIMARY KEY,
     session_id  TEXT NOT NULL,
-    start_sec   INTEGER NOT NULL,
-    end_sec     INTEGER NOT NULL,
+    start_sec   REAL NOT NULL,
+    end_sec     REAL NOT NULL,
     min_value   REAL,
+    transcript  TEXT,
     comment     TEXT,
     synced_at   TEXT,
     FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE CASCADE

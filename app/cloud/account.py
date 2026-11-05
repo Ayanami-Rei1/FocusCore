@@ -7,6 +7,8 @@ All methods are blocking; the interface calls them from a background thread.
 
 from pathlib import Path
 
+import numpy as np
+
 from app.cloud.client import (
     AuthSession,
     CloudClient,
@@ -15,6 +17,7 @@ from app.cloud.client import (
 )
 from app.cloud.config import load_cloud_config
 from app.cloud.sync import SyncResult, synchronize
+from app.core.transcription import encode_wav
 from app.db.account import StoredAccount, clear_account, load_account, save_account
 from app.db.local import DB_PATH, LOCAL_USER_ID
 from app.db.sessions import reassign_sessions
@@ -35,7 +38,7 @@ class AccountService:
 
     @property
     def is_configured(self) -> bool:
-        """False if ~/.focuscore/cloud.json is missing: the app works offline."""
+        """False if no cloud configuration was found: the app works offline."""
         return self._client is not None
 
     @property
@@ -71,12 +74,21 @@ class AccountService:
         return self.synchronize()
 
     def synchronize(self) -> SyncResult:
-        """Exchange sessions with the server."""
+        """Exchange sessions with the server.
+
+        As in `restore`, a saved sign-in that the server no longer accepts
+        makes the account forgotten before InvalidCredentialsError is raised,
+        so the interface shows the sign-in form instead of a dead account.
+        """
         account = self._require_account()
         client = self._cloud()
-        if client.session is None:
-            client.restore(account.refresh_token)
-        result = synchronize(client, account.user_id, self._db_path)
+        try:
+            if client.session is None:
+                client.restore(account.refresh_token)
+            result = synchronize(client, account.user_id, self._db_path)
+        except InvalidCredentialsError:
+            clear_account(self._db_path)
+            raise
         self._save_tokens()
         return result
 
@@ -93,6 +105,17 @@ class AccountService:
         client.sign_in(account.email, current_password)
         client.change_password(new_password)
         self._save_tokens()
+
+    def transcribe(self, samples: np.ndarray, sample_rate: int) -> str:
+        """Recognize speech in a clip through the project's Edge Function.
+
+        Has the same signature as WhisperClient.transcribe, so the
+        transcription code works with either of them.
+        """
+        self._ensure_signed_in()
+        text = self._cloud().transcribe(encode_wav(samples, sample_rate))
+        self._save_tokens()
+        return text
 
     def sign_out(self) -> None:
         """Forget the account on this device; sessions stay in the local database."""
@@ -143,7 +166,7 @@ class AccountService:
 
 
 def create_account_service(db_path: Path = DB_PATH) -> AccountService:
-    """Build the service from ~/.focuscore/cloud.json, working offline without it."""
+    """Build the service from the user's or the bundled cloud configuration, offline without them."""
     config = load_cloud_config()
     client = CloudClient(config) if config else None
     return AccountService(client, db_path)

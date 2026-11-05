@@ -12,6 +12,7 @@ from collections.abc import Iterable, Iterator
 from typing import TypeVar
 
 DEFAULT_FPS = 25.0
+TRAINING_CLIP_FPS = 3.75
 MIN_FRACTION_FOR_FORECAST = 0.02
 MIN_SECONDS_FOR_FORECAST = 2.0
 COUNTDOWN_TOLERANCE_SEC = 5.0
@@ -28,6 +29,16 @@ def usable_fps(reported_fps: float) -> float:
     if math.isnan(reported_fps) or reported_fps <= 0:
         return DEFAULT_FPS
     return reported_fps
+
+
+def frame_stride(fps: float) -> int:
+    """Return how many source frames lie between two frames of a model clip.
+
+    The model was trained on clips sampled at TRAINING_CLIP_FPS (8 frames with
+    stride 8 from 30 fps video), so the stride is derived from the frame rate
+    of the source: 8 for 30 fps, 7 for 25 fps, 16 for 60 fps. At least one.
+    """
+    return max(1, round(fps / TRAINING_CLIP_FPS))
 
 
 def frames_between_estimates(interval_sec: float, fps: float) -> int:

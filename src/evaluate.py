@@ -13,6 +13,7 @@ from omegaconf import DictConfig, OmegaConf
 from src.conf.config import Config, register_configs
 from src.models import VideoClassificationModule, create_model
 from src.models.backbones import *  # noqa: F401,F403
+from src.train import build_datamodule
 
 log = logging.getLogger(__name__)
 
@@ -39,22 +40,23 @@ def evaluate(cfg: Config) -> dict[str, float]:
         checkpoint_path, model=model_backbone
     )
 
-    # TODO: build datamodule from config (same as in train.py)
-    datamodule = None
-    raise NotImplementedError("Wire up dataset loading before evaluating.")
+    # Same datasets / pathways / transforms as training, so the test subset
+    # (filtered per sampling window) is identical to trainer.test() in train.py.
+    datamodule = build_datamodule(cfg)
 
     trainer = L.Trainer(
         accelerator=cfg.trainer.accelerator,
         devices=cfg.trainer.devices,
         precision=cfg.trainer.precision,
         logger=False,
+        enable_checkpointing=False,
     )
 
     results = trainer.test(module, datamodule=datamodule)
     return results[0] if results else {}
 
 
-@hydra.main(version_base=None, config_name="config")
+@hydra.main(version_base=None, config_path="../configs", config_name="config")
 def main(cfg: DictConfig) -> None:
     results = evaluate(cfg)
     log.info(f"Test Results:\n{OmegaConf.to_yaml(results)}")

@@ -1,8 +1,10 @@
 services:
-  research:
-    build: .
-    image: bakindf/focus-core:1.0.0
-    container_name: focus-core-container
+  training:
+    build:
+      context: .
+      dockerfile: docker/training/Dockerfile
+    image: focuscore-training
+    container_name: focuscore-training
     volumes:
       - .:/app
     ports:
