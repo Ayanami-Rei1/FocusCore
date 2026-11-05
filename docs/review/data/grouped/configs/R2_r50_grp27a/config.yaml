@@ -1,0 +1,51 @@
+experiment:
+  name: resnet50_ouc_cge_baseline
+  seed: 42
+mlflow:
+  tracking_uri: null
+  experiment_name: review_grouped
+paths:
+  output_dir: outputs/review/R2_r50_grp27a
+  checkpoints: ${paths.output_dir}/checkpoints
+  logs: ${paths.output_dir}/logs
+data:
+  name: ouc_cge
+  root: data/grp27a
+  num_classes: 3
+  clip_duration_sec: 10.0
+  fps: 30
+  batch_size: 16
+  num_workers: 16
+  pin_memory: true
+model:
+  name: resnet50
+  num_classes: 3
+  pretrained: true
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  num_frames: 1
+trainer:
+  max_epochs: 10
+  min_epochs: 5
+  accelerator: auto
+  devices: auto
+  strategy: auto
+  precision: bf16-mixed
+  accumulate_grad_batches: 1
+  checkpoint:
+    monitor: val/accuracy
+    mode: max
+    save_top_k: 2
+    save_last: true
+  early_stopping:
+    monitor: val/accuracy
+    patience: 15
+    mode: max
+    min_epochs: 10
+  log_every_n_steps: 10
+  val_check_interval: 1.0
+  check_val_every_n_epoch: 1
+  gradient_clip_val: 1.0
+  gradient_clip_algorithm: norm
+  deterministic: false
+checkpoint_path: null

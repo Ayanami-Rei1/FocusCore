@@ -1,0 +1,113 @@
+Seed set to 42
+[2026-11-05 12:22:55,810][__main__][INFO] - Config:
+experiment:
+  name: baseline_ouc_cge
+  seed: 42
+mlflow:
+  tracking_uri: null
+  experiment_name: review_grouped
+paths:
+  output_dir: outputs/review/R5_slow_grp27a
+  checkpoints: ${paths.output_dir}/checkpoints
+  logs: ${paths.output_dir}/logs
+data:
+  name: ouc_cge
+  root: data/grp27a
+  num_classes: 3
+  clip_duration_sec: 10.0
+  fps: 30
+  batch_size: 32
+  num_workers: 16
+  pin_memory: true
+model:
+  name: slow_r50
+  num_classes: 3
+  pretrained: true
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  sample_rate: 8
+  num_frames: 8
+trainer:
+  max_epochs: 15
+  min_epochs: 5
+  accelerator: auto
+  devices: auto
+  strategy: auto
+  precision: bf16-mixed
+  accumulate_grad_batches: 1
+  checkpoint:
+    monitor: val/accuracy
+    mode: max
+    save_top_k: 2
+    save_last: true
+  early_stopping:
+    monitor: val/accuracy
+    patience: 5
+    mode: max
+    min_epochs: 5
+  log_every_n_steps: 10
+  val_check_interval: 1.0
+  check_val_every_n_epoch: 1
+  gradient_clip_val: 1.0
+  gradient_clip_algorithm: norm
+  deterministic: false
+checkpoint_path: null
+
+[2026-11-05 12:24:18,155][src.data.ouc_cge][WARNING] - split=train: filtered out 100/5386 clips (short/missing/corrupt)
+[2026-11-05 12:24:18,167][src.data.ouc_cge][INFO] - OUC-CGE split=train clips=5286 fps=[3.75] num_frames=[8] rates=[8] window=64
+[2026-11-05 12:24:30,092][src.data.ouc_cge][INFO] - OUC-CGE split=val clips=771 fps=[3.75] num_frames=[8] rates=[8] window=64
+[2026-11-05 12:24:53,761][src.data.ouc_cge][WARNING] - split=test: filtered out 13/1544 clips (short/missing/corrupt)
+[2026-11-05 12:24:53,767][src.data.ouc_cge][INFO] - OUC-CGE split=test clips=1531 fps=[3.75] num_frames=[8] rates=[8] window=64
+Downloading: "https://github.com/facebookresearch/pytorchvideo/zipball/main" to /root/.cache/torch/hub/main.zip
+Downloading: "https://dl.fbaipublicfiles.com/pytorchvideo/model_zoo/kinetics/SLOW_8x8_R50.pyth" to /root/.cache/torch/hub/checkpoints/SLOW_8x8_R50.pyth
+  0%|          | 0.00/248M [00:00<?, ?B/s]  2%|▏         | 4.00M/248M [00:00<00:06, 41.9MB/s] 11%|█         | 26.8M/248M [00:00<00:01, 157MB/s]  20%|██        | 50.2M/248M [00:00<00:01, 198MB/s] 30%|██▉       | 73.9M/248M [00:00<00:00, 217MB/s] 39%|███▉      | 97.6M/248M [00:00<00:00, 228MB/s] 49%|████▉     | 121M/248M [00:00<00:00, 235MB/s]  58%|█████▊    | 145M/248M [00:00<00:00, 239MB/s] 68%|██████▊   | 169M/248M [00:00<00:00, 241MB/s] 78%|███████▊  | 192M/248M [00:00<00:00, 243MB/s] 87%|████████▋ | 216M/248M [00:01<00:00, 245MB/s] 97%|█████████▋| 240M/248M [00:01<00:00, 246MB/s]100%|██████████| 248M/248M [00:01<00:00, 228MB/s]
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+`Trainer(val_check_interval=1.0)` was configured so validation will run at the end of the training epoch..
+[2026-11-05 12:25:06,000][__main__][INFO] - Starting training...
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/model_summary/model_summary.py:242: Precision bf16-mixed is not supported by the model summary.  Estimated model size in MB will not be accurate. Using 32 bits instead.
+┏━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┓
+┃   ┃ Name      ┃ Type               ┃ Params ┃ Mode  ┃ FLOPs ┃
+┡━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━┩
+│ 0 │ model     │ Net                │ 31.6 M │ train │     0 │
+│ 1 │ train_acc │ MulticlassAccuracy │      0 │ train │     0 │
+│ 2 │ val_acc   │ MulticlassAccuracy │      0 │ train │     0 │
+│ 3 │ val_f1    │ MulticlassF1Score  │      0 │ train │     0 │
+│ 4 │ test_acc  │ MulticlassAccuracy │      0 │ train │     0 │
+│ 5 │ test_f1   │ MulticlassF1Score  │      0 │ train │     0 │
+└───┴───────────┴────────────────────┴────────┴───────┴───────┘
+Trainable params: 31.6 M                                                        
+Non-trainable params: 0                                                         
+Total params: 31.6 M                                                            
+Total estimated model params size (MB): 126.563                                 
+Modules in train mode: 209                                                      
+Modules in eval mode: 0                                                         
+Total FLOPs: 0                                                                  
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 32. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 3. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+Epoch 10/14 ━━━━━━━━━━━━━━━━ 165/165 0:00:37 •        5.23it/s v_num: 4192      
+                                     0:00:00                   train/loss_step: 
+                                                               0.001 val/loss:  
+                                                               2.878            
+                                                               val/accuracy:    
+                                                               0.392            
+                                                               train/loss_epoch:
+                                                               0.012            
+[2026-11-05 12:34:03,706][__main__][INFO] - Running test evaluation...
+Restoring states from the checkpoint path at /workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5759.ckpt
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Loaded model weights from the checkpoint at /workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5759.ckpt
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 27. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃        Test metric        ┃       DataLoader 0        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│       test/accuracy       │    0.5179620981216431     │
+│       test/f1_macro       │    0.44668346643447876    │
+│         test/loss         │    1.6071752309799194     │
+└───────────────────────────┴───────────────────────────┘
+Testing ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48/48 0:00:06 • 0:00:00 7.31it/s 

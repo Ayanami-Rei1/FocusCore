@@ -1,0 +1,21 @@
+manifest rows: 7705 train=6164 val=770 test=771
+decoded 1000/7705 in 95s
+decoded 2000/7705 in 193s
+decoded 3000/7705 in 310s
+decoded 4000/7705 in 430s
+decoded 5000/7705 in 546s
+decoded 6000/7705 in 649s
+decoded 7000/7705 in 766s
+decode done in 833s
+unreadable clips: 4
+  BAD videos/high/view2631.mp4 train
+  BAD videos/high/view2521.mp4 train
+  BAD videos/high/view2632.mp4 train
+  BAD videos/high/view2630.mp4 train
+features done in 17s
+saved train: 6164 clips, ok=6160
+saved val: 770 clips, ok=770
+saved test: 771 clips, ok=771
+n_frames percentiles (1,5,25,50,75,95,99): [   9.   77.  158.  165.  300.  355. 5068.]
+clips with reported frame count < 64 (dropped by OUCCGEDataset window filter): 117 of 7705
+reported != actual frame count: 0

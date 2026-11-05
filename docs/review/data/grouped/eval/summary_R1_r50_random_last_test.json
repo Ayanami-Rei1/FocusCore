@@ -1,0 +1,37 @@
+{
+  "tag": "R1_r50_random_last_test",
+  "model": "resnet50",
+  "ckpt": "outputs/review/R1_r50_random/checkpoints/last.ckpt",
+  "split": "test",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 771,
+  "dropped_by_window_filter": 0,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.9948119521141052,
+  "lightning_test_f1_macro": 0.9943801164627075,
+  "lightning_test_loss": 0.011405635625123978,
+  "sklearn_accuracy": 0.9948119325551232,
+  "sklearn_f1_macro": 0.9943800915076443,
+  "confusion_rows_true_low_mid_high": [
+    [
+      324,
+      0,
+      1
+    ],
+    [
+      1,
+      187,
+      1
+    ],
+    [
+      0,
+      1,
+      256
+    ]
+  ],
+  "n_errors": 4,
+  "mean_max_prob": 0.996181070804596,
+  "seconds": 6.8
+}

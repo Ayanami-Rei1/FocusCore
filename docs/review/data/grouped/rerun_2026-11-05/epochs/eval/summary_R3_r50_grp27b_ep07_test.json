@@ -1,0 +1,37 @@
+{
+  "tag": "R3_r50_grp27b_ep07_test",
+  "model": "resnet50",
+  "ckpt": "outputs/review_epochs/R3_r50_grp27b/checkpoints/epoch=07-val_acc=0.4936.ckpt",
+  "split": "test",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 1730,
+  "evaluated": 1730,
+  "dropped_by_window_filter": 0,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.526589572429657,
+  "lightning_test_f1_macro": 0.45594698190689087,
+  "lightning_test_loss": 2.717867136001587,
+  "sklearn_accuracy": 0.5265895953757226,
+  "sklearn_f1_macro": 0.45594697660263545,
+  "confusion_rows_true_low_mid_high": [
+    [
+      390,
+      145,
+      71
+    ],
+    [
+      257,
+      43,
+      122
+    ],
+    [
+      206,
+      18,
+      478
+    ]
+  ],
+  "n_errors": 819,
+  "mean_max_prob": 0.9163076281547546,
+  "seconds": 19.0
+}

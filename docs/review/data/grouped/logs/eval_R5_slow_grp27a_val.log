@@ -1,0 +1,49 @@
+Seed set to 42
+split=val manifest_rows=771 after_window_filter=771 window=64
+Using cache found in /root/.cache/torch/hub/facebookresearch_pytorchvideo_main
+Using bfloat16 Automatic Mixed Precision (AMP)
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+You are using a CUDA device ('NVIDIA GeForce RTX 5090') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 16. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+/venv/main/lib/python3.12/site-packages/lightning/pytorch/utilities/data.py:79: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 3. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+{
+  "tag": "R5_slow_grp27a_val",
+  "model": "slow",
+  "ckpt": "/workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5422.ckpt",
+  "split": "val",
+  "mode": "identity",
+  "precision": "bf16-mixed",
+  "manifest_rows": 771,
+  "evaluated": 771,
+  "dropped_by_window_filter": 0,
+  "duplicate_paths_in_eval": 0,
+  "lightning_test_accuracy": 0.5421530604362488,
+  "lightning_test_f1_macro": 0.5028152465820312,
+  "lightning_test_loss": 1.7765253782272339,
+  "sklearn_accuracy": 0.5421530479896238,
+  "sklearn_f1_macro": 0.5028152451494129,
+  "confusion_rows_true_low_mid_high": [
+    [
+      250,
+      44,
+      12
+    ],
+    [
+      128,
+      55,
+      18
+    ],
+    [
+      115,
+      36,
+      113
+    ]
+  ],
+  "n_errors": 353,
+  "mean_max_prob": 0.8216522932052612,
+  "seconds": 19.8
+}

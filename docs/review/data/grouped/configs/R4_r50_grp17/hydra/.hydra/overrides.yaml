@@ -1,0 +1,6 @@
+- +experiment=resnet50_ouc_cge_baseline
+- trainer.max_epochs=10
+- data.batch_size=16
+- data.root=data/grp17
+- paths.output_dir=outputs/review/R4_r50_grp17
+- mlflow.experiment_name=review_grouped

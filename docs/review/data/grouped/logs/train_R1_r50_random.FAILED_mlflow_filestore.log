@@ -1,0 +1,101 @@
+Seed set to 42
+[2026-10-26 14:36:32,209][__main__][INFO] - Config:
+experiment:
+  name: resnet50_ouc_cge_baseline
+  seed: 42
+mlflow:
+  tracking_uri: null
+  experiment_name: review_grouped
+paths:
+  output_dir: outputs/review/R1_r50_random
+  checkpoints: ${paths.output_dir}/checkpoints
+  logs: ${paths.output_dir}/logs
+data:
+  name: ouc_cge
+  root: data/ouc-cge-320
+  num_classes: 3
+  clip_duration_sec: 10.0
+  fps: 30
+  batch_size: 16
+  num_workers: 16
+  pin_memory: true
+model:
+  name: resnet50
+  num_classes: 3
+  pretrained: true
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  num_frames: 1
+trainer:
+  max_epochs: 10
+  min_epochs: 5
+  accelerator: auto
+  devices: auto
+  strategy: auto
+  precision: bf16-mixed
+  accumulate_grad_batches: 1
+  checkpoint:
+    monitor: val/accuracy
+    mode: max
+    save_top_k: 2
+    save_last: true
+  early_stopping:
+    monitor: val/accuracy
+    patience: 15
+    mode: max
+    min_epochs: 10
+  log_every_n_steps: 10
+  val_check_interval: 1.0
+  check_val_every_n_epoch: 1
+  gradient_clip_val: 1.0
+  gradient_clip_algorithm: norm
+  deterministic: false
+checkpoint_path: null
+
+[2026-10-26 14:38:02,815][src.data.ouc_cge][WARNING] - split=train: filtered out 4/6164 clips (short/missing/corrupt)
+[2026-10-26 14:38:02,825][src.data.ouc_cge][INFO] - OUC-CGE split=train clips=6160 fps=[30] num_frames=[1] rates=[1] window=1
+[2026-10-26 14:38:13,914][src.data.ouc_cge][INFO] - OUC-CGE split=val clips=770 fps=[30] num_frames=[1] rates=[1] window=1
+[2026-10-26 14:38:13,919][src.data.ouc_cge][WARNING] - Dropped 1 malformed manifest row(s) from test.csv
+[2026-10-26 14:38:13,921][src.data.ouc_cge][INFO] - Loaded cached filtered manifest: data/ouc-cge-320/data_labels/.cache/test_w1.csv (771 clips)
+[2026-10-26 14:38:13,921][src.data.ouc_cge][INFO] - OUC-CGE split=test clips=771 fps=[30] num_frames=[1] rates=[1] window=1
+Using cache found in /root/.cache/torch/hub/pytorch_vision_v0.10.0
+/venv/main/lib/python3.12/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/venv/main/lib/python3.12/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Error executing job with overrides: ['+experiment=resnet50_ouc_cge_baseline', 'trainer.max_epochs=10', 'data.batch_size=16', 'data.root=data/ouc-cge-320', 'paths.output_dir=outputs/review/R1_r50_random', 'mlflow.experiment_name=review_grouped']
+Traceback (most recent call last):
+  File "/workspace/focus-core/src/train.py", line 179, in main
+    return train(cfg)
+           ^^^^^^^^^^
+  File "/workspace/focus-core/src/train.py", line 104, in train
+    mlflow_logger = MLFlowLogger(
+                    ^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/lightning/pytorch/loggers/mlflow.py", line 153, in __init__
+    self._mlflow_client = MlflowClient(tracking_uri)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/mlflow/tracking/client.py", line 257, in __init__
+    self._tracking_client = TrackingServiceClient(final_tracking_uri)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/mlflow/tracking/_tracking_service/client.py", line 98, in __init__
+    self.store
+  File "/venv/main/lib/python3.12/site-packages/mlflow/tracking/_tracking_service/client.py", line 102, in store
+    return utils._get_store(self.tracking_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/mlflow/tracking/_tracking_service/utils.py", line 267, in _get_store
+    return _tracking_store_registry.get_store(store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/mlflow/tracking/_tracking_service/registry.py", line 45, in get_store
+    return self._get_store_with_resolved_uri(resolved_store_uri, artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/mlflow/tracking/_tracking_service/registry.py", line 56, in _get_store_with_resolved_uri
+    return builder(store_uri=resolved_store_uri, artifact_uri=artifact_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/mlflow/tracking/_tracking_service/utils.py", line 181, in _get_file_store
+    return FileStore(store_uri, store_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/venv/main/lib/python3.12/site-packages/mlflow/store/tracking/file_store.py", line 225, in __init__
+    raise MlflowException(
+mlflow.exceptions.MlflowException: The filesystem tracking backend (e.g., './mlruns') is in maintenance mode and will not receive further updates. Please migrate to a database backend (e.g., 'sqlite:///mlflow.db') to access the latest MLflow features. The `mlflow migrate-filestore` tool migrates your existing data losslessly. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance. If the filesystem backend is required for your workflow, set `MLFLOW_ALLOW_FILE_STORE=true` to opt out of this exception.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

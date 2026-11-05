@@ -1,0 +1,51 @@
+=== R2_r50_grp27a model=resnet50 root=data/grp27a code=203cfd7 start=2026-11-05T12:49:31+00:00
+R2_r50_grp27a rc=0 wall=205s
+  R2_r50_grp27a epoch 00 rc=0 "lightning_test_accuracy": 0.3853626847267151
+  R2_r50_grp27a epoch 01 rc=0 "lightning_test_accuracy": 0.38147667050361633
+  R2_r50_grp27a epoch 02 rc=0 "lightning_test_accuracy": 0.503238320350647
+  R2_r50_grp27a epoch 03 rc=0 "lightning_test_accuracy": 0.4099740982055664
+  R2_r50_grp27a epoch 04 rc=0 "lightning_test_accuracy": 0.4009067416191101
+  R2_r50_grp27a epoch 05 rc=0 "lightning_test_accuracy": 0.4378238320350647
+  R2_r50_grp27a epoch 06 rc=0 "lightning_test_accuracy": 0.37111398577690125
+  R2_r50_grp27a epoch 07 rc=0 "lightning_test_accuracy": 0.4009067416191101
+  R2_r50_grp27a epoch 08 rc=0 "lightning_test_accuracy": 0.3762953281402588
+  R2_r50_grp27a epoch 09 rc=0 "lightning_test_accuracy": 0.3950777053833008
+=== R3_r50_grp27b model=resnet50 root=data/grp27b code=203cfd7 start=2026-11-05T12:54:06+00:00
+R3_r50_grp27b rc=0 wall=217s
+  R3_r50_grp27b epoch 00 rc=0 "lightning_test_accuracy": 0.5312138795852661
+  R3_r50_grp27b epoch 01 rc=0 "lightning_test_accuracy": 0.526589572429657
+  R3_r50_grp27b epoch 02 rc=0 "lightning_test_accuracy": 0.5317919254302979
+  R3_r50_grp27b epoch 03 rc=0 "lightning_test_accuracy": 0.545086681842804
+  R3_r50_grp27b epoch 04 rc=0 "lightning_test_accuracy": 0.5375722646713257
+  R3_r50_grp27b epoch 05 rc=0 "lightning_test_accuracy": 0.49421966075897217
+  R3_r50_grp27b epoch 06 rc=0 "lightning_test_accuracy": 0.5404624342918396
+  R3_r50_grp27b epoch 07 rc=0 "lightning_test_accuracy": 0.526589572429657
+  R3_r50_grp27b epoch 08 rc=0 "lightning_test_accuracy": 0.5294797420501709
+  R3_r50_grp27b epoch 09 rc=0 "lightning_test_accuracy": 0.5225433707237244
+=== R4_r50_grp17 model=resnet50 root=data/grp17 code=203cfd7 start=2026-11-05T12:58:51+00:00
+R4_r50_grp17 rc=0 wall=221s
+  R4_r50_grp17 epoch 00 rc=0 "lightning_test_accuracy": 0.8064935207366943
+  R4_r50_grp17 epoch 01 rc=0 "lightning_test_accuracy": 0.748701274394989
+  R4_r50_grp17 epoch 02 rc=0 "lightning_test_accuracy": 0.7227272987365723
+  R4_r50_grp17 epoch 03 rc=0 "lightning_test_accuracy": 0.7318181991577148
+  R4_r50_grp17 epoch 04 rc=0 "lightning_test_accuracy": 0.6831169128417969
+  R4_r50_grp17 epoch 05 rc=0 "lightning_test_accuracy": 0.6902597546577454
+  R4_r50_grp17 epoch 06 rc=0 "lightning_test_accuracy": 0.7493506669998169
+  R4_r50_grp17 epoch 07 rc=0 "lightning_test_accuracy": 0.766883134841919
+  R4_r50_grp17 epoch 08 rc=0 "lightning_test_accuracy": 0.7590909004211426
+  R4_r50_grp17 epoch 09 rc=0 "lightning_test_accuracy": 0.7701298594474792
+=== R5_slow_grp27a model=slow root=data/grp27a code=203cfd7 start=2026-11-05T13:03:35+00:00
+R5_slow_grp27a rc=0 wall=641s
+  R5_slow_grp27a epoch 00 rc=0 "lightning_test_accuracy": 0.4278249442577362
+  R5_slow_grp27a epoch 01 rc=0 "lightning_test_accuracy": 0.5205748081207275
+  R5_slow_grp27a epoch 02 rc=0 "lightning_test_accuracy": 0.42913129925727844
+  R5_slow_grp27a epoch 03 rc=0 "lightning_test_accuracy": 0.4160679280757904
+  R5_slow_grp27a epoch 04 rc=0 "lightning_test_accuracy": 0.43500980734825134
+  R5_slow_grp27a epoch 05 rc=0 "lightning_test_accuracy": 0.41476160287857056
+  R5_slow_grp27a epoch 06 rc=0 "lightning_test_accuracy": 0.4154147505760193
+  R5_slow_grp27a epoch 07 rc=0 "lightning_test_accuracy": 0.3925538957118988
+  R5_slow_grp27a epoch 08 rc=0 "lightning_test_accuracy": 0.40300458669662476
+  R5_slow_grp27a epoch 09 rc=0 "lightning_test_accuracy": 0.39973872900009155
+  R5_slow_grp27a epoch 10 rc=0 "lightning_test_accuracy": 0.4069235920906067
+  R5_slow_grp27a epoch 11 rc=0 "lightning_test_accuracy": 0.3925538957118988
+EPOCH_CURVE_DONE

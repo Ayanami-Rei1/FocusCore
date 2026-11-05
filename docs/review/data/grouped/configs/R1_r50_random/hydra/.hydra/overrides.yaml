@@ -1,0 +1,6 @@
+- +experiment=resnet50_ouc_cge_baseline
+- trainer.max_epochs=10
+- data.batch_size=16
+- data.root=data/ouc-cge-320
+- paths.output_dir=outputs/review/R1_r50_random
+- mlflow.experiment_name=review_grouped

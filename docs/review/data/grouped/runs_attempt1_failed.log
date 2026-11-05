@@ -1,0 +1,5 @@
+=== R1_r50_random model=resnet50 root=data/ouc-cge-320 code=reviewed-working-tree start=2026-10-26T14:36:27+00:00 elapsed=0min
+CMD: python -m src.train +experiment=resnet50_ouc_cge_baseline trainer.max_epochs=10 data.batch_size=16 data.root=data/ouc-cge-320 paths.output_dir=outputs/review/R1_r50_random mlflow.experiment_name=review_grouped hydra.run.dir=outputs/review/R1_r50_random/hydra
+R1_r50_random rc=1 wall=109s code=reviewed-working-tree
+=== R2_r50_grp27a model=resnet50 root=data/grp27a code=reviewed-working-tree start=2026-10-26T14:38:16+00:00 elapsed=1min
+CMD: python -m src.train +experiment=resnet50_ouc_cge_baseline trainer.max_epochs=10 data.batch_size=16 data.root=data/grp27a paths.output_dir=outputs/review/R2_r50_grp27a mlflow.experiment_name=review_grouped hydra.run.dir=outputs/review/R2_r50_grp27a/hydra

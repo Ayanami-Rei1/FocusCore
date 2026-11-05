@@ -1,0 +1,108 @@
+{
+  "run_id": "63b0a337b8bc406f8a3f27ff73664192",
+  "experiment_id": "777814996245571962",
+  "best_epoch": {
+    "last": 1.0,
+    "last_step": 0,
+    "n": 2,
+    "max": 1.0,
+    "min": 0.0
+  },
+  "best_val/accuracy": {
+    "last": 0.575875461101532,
+    "last_step": 0,
+    "n": 2,
+    "max": 0.575875461101532,
+    "min": 0.43450063467025757
+  },
+  "epoch": {
+    "last": 11.0,
+    "last_step": 1815,
+    "n": 204,
+    "max": 11.0,
+    "min": 0.0
+  },
+  "final_epoch": {
+    "last": 11.0,
+    "last_step": 0,
+    "n": 1,
+    "max": 11.0,
+    "min": 11.0
+  },
+  "lr-AdamW": {
+    "last": 2.5750000000000013e-05,
+    "last_step": 1650,
+    "n": 11,
+    "max": 0.0001,
+    "min": 2.5750000000000013e-05
+  },
+  "test/accuracy": {
+    "last": 0.5179620981216431,
+    "last_step": 1815,
+    "n": 1,
+    "max": 0.5179620981216431,
+    "min": 0.5179620981216431
+  },
+  "test/f1_macro": {
+    "last": 0.44668346643447876,
+    "last_step": 1815,
+    "n": 1,
+    "max": 0.44668346643447876,
+    "min": 0.44668346643447876
+  },
+  "test/loss": {
+    "last": 1.6071752309799194,
+    "last_step": 1815,
+    "n": 1,
+    "max": 1.6071752309799194,
+    "min": 1.6071752309799194
+  },
+  "train/accuracy": {
+    "last": 0.9965909123420715,
+    "last_step": 1814,
+    "n": 11,
+    "max": 0.9965909123420715,
+    "min": 0.8030303120613098
+  },
+  "train/loss_epoch": {
+    "last": 0.01151810958981514,
+    "last_step": 1814,
+    "n": 11,
+    "max": 0.4788789749145508,
+    "min": 0.01151810958981514
+  },
+  "train/loss_step": {
+    "last": 0.0030343830585479736,
+    "last_step": 1809,
+    "n": 181,
+    "max": 0.978515625,
+    "min": 5.6605786085128784e-05
+  },
+  "val/accuracy": {
+    "last": 0.3916991055011749,
+    "last_step": 1814,
+    "n": 11,
+    "max": 0.575875461101532,
+    "min": 0.364461749792099
+  },
+  "val/f1_macro": {
+    "last": 0.36024630069732666,
+    "last_step": 1814,
+    "n": 11,
+    "max": 0.5608084201812744,
+    "min": 0.35519251227378845
+  },
+  "val/loss": {
+    "last": 2.8783352375030518,
+    "last_step": 1814,
+    "n": 11,
+    "max": 3.26664662361145,
+    "min": 1.5156062841415405
+  },
+  "param_num_classes": "3",
+  "param_learning_rate": "0.0001",
+  "param_weight_decay": "0.0001",
+  "param_best_checkpoint_path": "/workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/epoch=01-val_acc=0.5759.ckpt",
+  "param_last_checkpoint_path": "/workspace/focus-core/outputs/review/R5_slow_grp27a/checkpoints/last.ckpt",
+  "param_output_dir": "outputs/review/R5_slow_grp27a"
+}
